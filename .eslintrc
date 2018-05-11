@@ -1,0 +1,35 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "no-var": "error",
+    "react/jsx-uses-vars": [
+      2
+    ],
+    "no-unused-vars": [
+      1,
+      {
+        "vars": "all",
+        "args": "none",
+        "varsIgnorePattern": "React"
+      }
+    ],
+    "comma-dangle": "warn",
+    "newline-after-var": "warn",
+    "newline-before-return": "warn",
+    "semi": "warn",
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "jsx-quotes": [
+      "warn",
+      "prefer-single"
+    ]
+  }
+}

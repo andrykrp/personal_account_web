@@ -1,0 +1,34 @@
+[
+  {
+    "name": "run:dev",
+    "command": "node back/server.js",
+    "env": {
+      "NODE_ENV": "dev",
+      "BABEL_ENV": "dev"
+    }
+  },
+  {
+    "name": "run:dev:debug",
+    "command": "node %NODE_DEBUG_OPTION% back/server.js",
+    "env": {
+      "NODE_ENV": "dev",
+      "BABEL_ENV": "dev"
+    }
+  },
+  {
+    "name": "build:production",
+    "command": "webpack -p --config ./back/webpack/common.config.js",
+    "env": {
+      "NODE_ENV": "production",
+      "BABEL_ENV": "production"
+    }
+  },
+  {
+    "name": "run:production",
+    "command": "node back/server.js",
+    "env": {
+      "NODE_ENV": "production",
+      "BABEL_ENV": "production"
+    }
+  }
+]
