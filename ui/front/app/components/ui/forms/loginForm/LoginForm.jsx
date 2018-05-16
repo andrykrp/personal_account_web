@@ -35,7 +35,7 @@ class LoginForm extends PureComponent {
                             </Form.Field>
                             <Form.Field>
                                 <label>Password</label>
-                                <Form.Input placeholder='Password' name='password' value={password} onChange={this.handleChange}/>
+                                <Form.Input type='password' placeholder='Password' name='password' value={password} onChange={this.handleChange}/>
                             </Form.Field>
                             <Button type='submit'>Login</Button>
                         </Form>
