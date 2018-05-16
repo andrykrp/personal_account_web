@@ -29,12 +29,12 @@ class AppRoute extends PureComponent {
             <I18n ns="translations">
                 {
                     (t, { i18n }) => (
-                        <div className="App">
-                            <div className="App-header">
+                        <div>
+                            {/*<div>
                                 <h2>{t('title')}</h2>
                                 <button onClick={() => i18n.changeLanguage('ru')}>ru</button>
                                 <button onClick={() => i18n.changeLanguage('en')}>en</button>
-                            </div>
+                            </div>*/}
                             <Route
                                 path={path}
                                 exact={exact}

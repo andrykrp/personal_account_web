@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import { Container, Divider, Grid, Header, Image } from 'semantic-ui-react'
 
 import styles from './CommonLayout.pcss';
 
@@ -14,13 +15,16 @@ export default class CommonLayout extends PureComponent {
 
         return (
             <div className={styles.wrapper}>
-                <div>Базовый слой</div>
-                <div>
-                    <NavLink to='/'>Страница 1</NavLink>
-                    <br />
-                    <NavLink to='/2'>Страница 2</NavLink>
-                </div>
-                {children}
+                <Container>
+                    <Header as='h3' dividing>UbCoin</Header>
+                    <Grid verticalAlign='middle' columns={2} centered>
+                        <Grid.Row>
+                            <Grid.Column>
+                                {children}
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Container>
             </div>
         );
     }

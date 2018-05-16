@@ -1,9 +1,12 @@
 const lang = {
     "translations": {
-        "title": "Welcome to react using react-i18next",
+        "title": "ubCoin",
         "description": {
-            "part1": "Part description.",
+            "part1": "Login success!",
             "part2": "Switch language between english and russian using buttons above."
+        },
+        "loginPage": {
+            "title": "Log in"
         }
     }
 };

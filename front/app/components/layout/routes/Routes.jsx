@@ -1,7 +1,9 @@
 import React from 'react';
 import { ConnectedRouter } from 'react-router-redux';
 import { Switch } from 'react-router-dom';
-import { map } from 'ramda';
+import { map, isEmpty } from 'ramda';
+import { bindActionCreators } from 'redux';
+import {connect} from 'react-redux';
 
 import AppRoute from 'components/layout/appRoute/AppRoute';
 
@@ -11,6 +13,7 @@ import history from 'constants/history';
 import routes from 'constants/routes';
 
 const Routes = () => (
+
     <ConnectedRouter history={history}>
         <Switch>
             {
@@ -29,4 +32,21 @@ const Routes = () => (
     </ConnectedRouter>
 );
 
-export default Routes;
+function mapStateToProps(state) {
+    const { loaders } = state;
+
+    return {
+        isLoading: !isEmpty(loaders)
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            // checkAuthorized
+        }, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Routes);
+
