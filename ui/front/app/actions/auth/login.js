@@ -2,16 +2,15 @@ import request from '../../utils/request';
 import { SHOW_LOADER, HIDE_LOADER } from 'constants/actionTypes';
 import { SIGN_IN } from 'constants/loaders';
 
-export default function register(login, password) {
+export default function register(email, password) {
     return dispatch => {
         dispatch({type: SHOW_LOADER, id: SIGN_IN});
 
         return request({
-            ignoreLogoutStatuses: true,
-            url: 'http://private-1ab5c-ubcoin.apiary-mock.com/auth/login',
-            method: 'POST',
-            body: {
-                login,
+            url: 'http://ubcoin.garmash.org/api/auth',
+            method: 'GET',
+            params: {
+                email,
                 password
             }
         }).then(response => {

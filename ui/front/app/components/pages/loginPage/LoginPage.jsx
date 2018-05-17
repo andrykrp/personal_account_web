@@ -4,6 +4,8 @@ import { I18n, translate } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom'
+import { Header } from 'semantic-ui-react';
+import NotificationSystem from 'react-notification-system';
 
 import LoginForm from '../../ui/forms/loginForm/LoginForm'
 
@@ -14,10 +16,23 @@ import styles from './LoginPage.pcss';
 
 class LoginPage extends PureComponent {
 
+    handleSetRef = (refName) => component => {
+        this[refName] = component;
+    };
 
     handleSignIn = (login, password) => {
+
         this.props.actions.login(login, password).then(() => {
             this.props.actions.redirect('/demo');
+            return;
+        }).catch(() => {
+            this.notification.addNotification({
+                title: 'Error',
+                message: 'Login failed',
+                autoDismiss: 3,
+                level: 'error',
+                position: 'tr'
+            });
         });
     };
 
@@ -28,9 +43,14 @@ class LoginPage extends PureComponent {
                 {
                     (t) => (
                         <div className={styles.wrapper}>
+                            <h2 className={styles.header}>{t('loginPage.title')}</h2>
                             <LoginForm
                                 onSubmit={this.handleSignIn}
                             />
+                            <div className={styles.wrapperLabel}>
+                                <span className={styles.label}>{t('loginPage.notAccount')}<a className={styles.linkSignUp}>Sign Up</a></span>
+                            </div>
+                            <NotificationSystem ref={this.handleSetRef('notification')} />
                         </div>
                     )
                 }

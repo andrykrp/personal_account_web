@@ -29,28 +29,26 @@ class AppRoute extends PureComponent {
             <I18n ns="translations">
                 {
                     (t, { i18n }) => (
-                        <div>
-                            {/*<div>
+                        <Route
+                            path={path}
+                            exact={exact}
+                            render={props => (
+                                <CommonLayout
+                                    {...props}
+                                    title={title}
+                                >
+                                    {/*<div>
                                 <h2>{t('title')}</h2>
                                 <button onClick={() => i18n.changeLanguage('ru')}>ru</button>
                                 <button onClick={() => i18n.changeLanguage('en')}>en</button>
                             </div>*/}
-                            <Route
-                                path={path}
-                                exact={exact}
-                                render={props => (
-                                    <CommonLayout
+                                    <Component
                                         {...props}
-                                        title={title}
-                                    >
-                                        <Component
-                                            {...props}
-                                            params={props.match.params}
-                                        />
-                                    </CommonLayout>
-                                )}
-                            />
-                        </div>
+                                        params={props.match.params}
+                                    />
+                                </CommonLayout>
+                            )}
+                        />
                     )
                 }
             </I18n>

@@ -15,16 +15,7 @@ export default class CommonLayout extends PureComponent {
 
         return (
             <div className={styles.wrapper}>
-                <Container>
-                    <Header as='h3' dividing>UbCoin</Header>
-                    <Grid verticalAlign='middle' columns={2} centered>
-                        <Grid.Row>
-                            <Grid.Column>
-                                {children}
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Container>
+                {children}
             </div>
         );
     }

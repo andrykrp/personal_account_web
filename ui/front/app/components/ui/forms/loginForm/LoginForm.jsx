@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { I18n, translate } from 'react-i18next';
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Checkbox, Form } from 'semantic-ui-react';
+
+import styles from './LoginForm.pcss';
 
 class LoginForm extends PureComponent {
     static propTypes = {
@@ -13,32 +15,38 @@ class LoginForm extends PureComponent {
         password: ''
     };
 
-    handleChange = (e, { name, value }) => this.setState({ [name]: value });
+    handleFieldChange = name => event => {
+        this.setState({
+            [name]: event.target.value
+        })
+    };
 
-    handleSubmit = () => {
+    handleSubmit = (event) => {
         const { login, password } = this.state;
 
+        event.preventDefault();
         this.props.onSubmit(login, password);
     };
 
-    render(){
+    render() {
         const { login, password } = this.state;
 
         return (
             <I18n ns="translations">
                 {
                     (t) => (
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Field>
-                                <label>Login</label>
-                                <Form.Input placeholder='Login' name='login' value={login} onChange={this.handleChange} />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Password</label>
-                                <Form.Input type='password' placeholder='Password' name='password' value={password} onChange={this.handleChange}/>
-                            </Form.Field>
-                            <Button type='submit'>Login</Button>
-                        </Form>
+                        <form onSubmit={this.handleSubmit} className={styles.wrapper}>
+                            <input placeholder='Email' name='login' value={login}
+                                   onChange={this.handleFieldChange('login')} className={styles.input} />
+
+                            <input type='password' placeholder='Password' name='password' value={password}
+                                   onChange={this.handleFieldChange('password')} className={styles.input} />
+
+                            <label className={styles.linkResetPassword}>
+                                {t('loginPage.loginForm.forgotPass')}
+                            </label>
+                            <button type='submit' onClick={this.handleSubmit} className={styles.button}>{t('loginPage.loginForm.buttonLogin')}</button>
+                        </form>
                     )
                 }
             </I18n>
