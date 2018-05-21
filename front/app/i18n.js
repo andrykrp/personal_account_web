@@ -6,7 +6,7 @@ import RU_CONFIG from './constants/locales/ru.js';
 i18n
     .use(reactI18nextModule)
     .init({
-        fallbackLng: 'en',
+        fallbackLng: 'ru',
         ns: ['translations'],
         defaultNS: 'translations',
         debug: false,

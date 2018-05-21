@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html style="height: 100%">
+<html style="position: relative; min-height: 100vh; box-sizing: border-box;">
 <head>
     <title>ubCoin</title>
     <link rel='stylesheet' href='/dist/bundle.css' />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"></link>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&amp;subset=cyrillic" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
 </head>
+<style>
+    *, :after, :before {
+        box-sizing: inherit;
+    }
+</style>
 
-<body style="height: 100%; margin: 0; font-family: 'Roboto', sans-serif;">
-<div id="root" style='height: 100%'></div>
+<body style="margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-width: 320px;
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.4285em;
+    color: rgba(0,0,0,.87);
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300">
+<div id="root" style='min-height: 100vh; display: flex'></div>
 <script src="/dist/bundle.js"></script>
 </body>
 </html>

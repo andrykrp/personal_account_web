@@ -2,7 +2,7 @@ import request from '../../utils/request';
 import { SHOW_LOADER, HIDE_LOADER } from 'constants/actionTypes';
 import { SIGN_IN } from 'constants/loaders';
 
-export default function register(email, password) {
+export default function register(login, password) {
     return dispatch => {
         dispatch({type: SHOW_LOADER, id: SIGN_IN});
 
@@ -10,7 +10,7 @@ export default function register(email, password) {
             url: 'http://ubcoin.garmash.org/api/auth',
             method: 'GET',
             params: {
-                email,
+                login,
                 password
             }
         }).then(response => {

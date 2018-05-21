@@ -36,10 +36,10 @@ class LoginForm extends PureComponent {
                 {
                     (t) => (
                         <form onSubmit={this.handleSubmit} className={styles.wrapper}>
-                            <input placeholder='Email' name='login' value={login}
+                            <input placeholder= {t('loginPage.loginForm.phone')} name='login' value={login}
                                    onChange={this.handleFieldChange('login')} className={styles.input} />
 
-                            <input type='password' placeholder='Password' name='password' value={password}
+                            <input type='password' placeholder={t('loginPage.loginForm.password')} name='password' value={password}
                                    onChange={this.handleFieldChange('password')} className={styles.input} />
 
                             <label className={styles.linkResetPassword}>

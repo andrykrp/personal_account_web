@@ -43,12 +43,36 @@ class LoginPage extends PureComponent {
                 {
                     (t) => (
                         <div className={styles.wrapper}>
-                            <h2 className={styles.header}>{t('loginPage.title')}</h2>
+                            <div className={styles.closeWrapper}>
+                                <img className={styles.logo} src='/img/close.svg'/>
+                            </div>
                             <LoginForm
                                 onSubmit={this.handleSignIn}
                             />
+                            <div className={styles.socialBlock}>
+                                <p className={styles.socialBlockTitle}>
+                                    {t('loginPage.signInWith')}
+                                </p>
+                                <div className={styles.socialBlockWrapperButton}>
+                                    <button className={styles.socialButton}>
+                                        <img className={styles.socialButtonIcon} src='/img/social/wechat.svg'/>
+                                    </button>
+                                    <button className={styles.socialButton}>
+                                        <img className={styles.socialButtonIcon} src='/img/social/telegram.svg'/>
+                                    </button>
+                                    <button className={styles.socialButton}>
+                                        <img className={styles.socialButtonIcon} src='/img/social/mail.svg'/>
+                                    </button>
+                                </div>
+                            </div>
                             <div className={styles.wrapperLabel}>
-                                <span className={styles.label}>{t('loginPage.notAccount')}<a className={styles.linkSignUp}>Sign Up</a></span>
+                                <span className={styles.label}>{t('loginPage.notAccount')}</span>
+                                <a className={styles.linkSignUp}>{t('loginPage.signUp')}</a>
+                            </div>
+                            <div className={styles.switchLanguage}>
+                                <button className={styles.switchLanguageButton}>
+                                    RU
+                                </button>
                             </div>
                             <NotificationSystem ref={this.handleSetRef('notification')} />
                         </div>

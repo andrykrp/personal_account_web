@@ -1,12 +1,21 @@
 const lang = {
-    "translations": {
-        "title": "Тест",
-        "description": {
-            "part1": "Описание 1",
-            "part2": "Описание 2"
+    'translations': {
+        'title': 'ubCoin',
+        'loginPage': {
+            'title': 'ubCoin.io',
+            'notAccount': 'Еще не зарегестрированы? ',
+            'signUp': 'Создать аккаунт',
+            'loginForm': {
+                'buttonLogin': 'Войти',
+                'forgotPass': 'Забыли пароль?',
+                'phone': 'Телефон',
+                'password': 'Пароль'
+            },
+            'signInWith': 'Войти с помощью'
         },
-        "loginPage": {
-            "title": "Войти"
+        'demoPage': {
+            'header': 'Сайт находится в разработке!',
+            'desc': 'Осталось совсем немного :)'
         }
     }
 };
