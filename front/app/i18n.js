@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
-import EN_CONFIG from './constants/locales/en.js';
-import RU_CONFIG from './constants/locales/ru.js';
+import EN_CONFIG from './constants/locales/en.json';
+import RU_CONFIG from './constants/locales/ru.json';
 
 i18n
     .use(reactI18nextModule)

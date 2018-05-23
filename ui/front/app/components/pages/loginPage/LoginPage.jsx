@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { I18n, translate } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Header } from 'semantic-ui-react';
 import NotificationSystem from 'react-notification-system';
 
@@ -67,7 +67,11 @@ class LoginPage extends PureComponent {
                             </div>
                             <div className={styles.wrapperLabel}>
                                 <span className={styles.label}>{t('loginPage.notAccount')}</span>
-                                <a className={styles.linkSignUp}>{t('loginPage.signUp')}</a>
+                                <Link
+                                    className={styles.linkSignUp}
+                                    to={`/register`}>
+                                    {t('loginPage.signUp')}
+                                </Link>
                             </div>
                             <div className={styles.switchLanguage}>
                                 <button className={styles.switchLanguageButton}>
