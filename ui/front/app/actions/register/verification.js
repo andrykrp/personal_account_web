@@ -7,7 +7,7 @@ export default function verification(phone) {
         dispatch({type: SHOW_LOADER, id: VERIFICATION});
 
         return request({
-            url: 'http://ubcoin.garmash.org/api/verification',
+            url: 'https://ubcoin.garmash.org/api/verification',
             method: 'POST',
             data: {
                 'type': 'REGISTRATION',
