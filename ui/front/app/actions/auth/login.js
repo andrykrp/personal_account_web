@@ -8,8 +8,8 @@ export default function register(login, password) {
 
         return request({
             url: 'http://ubcoin.garmash.org/api/auth',
-            method: 'GET',
-            params: {
+            method: 'POST',
+            data: {
                 login,
                 password
             }
