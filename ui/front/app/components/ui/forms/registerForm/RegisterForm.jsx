@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { I18n, translate } from 'react-i18next';
 
-import InputForm from '../../form/inputForm/InputForm';
+import InputFormWithMask from '../../form/inputFormWithMask/InputFormWithMask';
+import Button from '../../common/button/Button';
 
 import styles from './RegisterForm.pcss';
 
@@ -12,45 +13,53 @@ class RegisterForm extends PureComponent {
     };
 
     state = {
-        phone: ''
+        phone: '',
+        disableButton: true
     };
 
     handleFieldChange = name => event => {
         this.setState({
-            [name]: event.target.value
-        })
+            [name]: event.target.value,
+            disableButton: this.state.phone === ''
+        });
     };
 
     handleSubmit = (event) => {
         const { phone } = this.state;
+        const sendingPhone = phone.replace('+', '').replace('(', '').replace(')', '').replace('_', '');
 
         event.preventDefault();
-        this.props.onSubmit(phone);
+        this.props.onSubmit(sendingPhone);
     };
 
     render() {
-        const { phone } = this.state;
+        const { phone, disableButton } = this.state;
 
         return (
-            <I18n ns="translations">
+            <I18n ns='translations'>
                 {
                     (t) => (
                         <form onSubmit={this.handleSubmit} className={styles.wrapper}>
                             <div>
                                 <p className={styles.label}>{t('registerForm.enterPhone')}</p>
                             </div>
-                            <InputForm
+                            <InputFormWithMask
+                                mask={['(', '+', /[1-9]/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+                                placeholder={t('registerForm.phone')}
                                 value={phone}
                                 onChange={this.handleFieldChange('phone')}
-                                placeholder={t('registerForm.phone')}
-                                name='phone'
+                                keepCharPositions={false}
                             />
-                            <button type='submit' onClick={this.handleSubmit} className={styles.button}>{t('registerForm.buttonContinue')}</button>
+                            <Button
+                                disabled={disableButton}
+                                label={t('registerForm.buttonContinue')}
+                                onClick={this.handleSubmit}
+                            />
                         </form>
                     )
                 }
             </I18n>
-        )
+        );
     }
 }
 

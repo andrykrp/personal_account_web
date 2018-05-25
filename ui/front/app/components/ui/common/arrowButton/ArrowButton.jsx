@@ -14,16 +14,16 @@ export default class ArrowButton extends PureComponent {
         const { label, onClick } = this.props;
 
         return (
-            <I18n ns="translations">
+            <I18n ns='translations'>
                 {
                     (t) => (
                         <div className={styles.wrapper} onClick={onClick}>
                             <span className={styles.label} dangerouslySetInnerHTML={{ __html: label }} />
-                            <img src="/img/arrow_right.svg" className={styles.iconArrow} />
+                            <img src='/img/arrow_right.svg' className={styles.iconArrow} />
                         </div>
                     )
                 }
             </I18n>
-        )
+        );
     }
 }

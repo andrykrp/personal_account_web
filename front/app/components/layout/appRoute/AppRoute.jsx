@@ -26,7 +26,7 @@ class AppRoute extends PureComponent {
             Component = component;
 
         return (
-            <I18n ns="translations">
+            <I18n ns='translations'>
                 {
                     (t, { i18n }) => (
                         <Route

@@ -1,5 +1,5 @@
 import request from '../../utils/request';
-import { SHOW_LOADER, HIDE_LOADER } from '../../constants/actionTypes';
+import { SHOW_LOADER, HIDE_LOADER, SET_CODE } from '../../constants/actionTypes';
 import { VERIFICATION } from '../../constants/loaders';
 
 export default function verificationCheck(phone, code) {
@@ -15,7 +15,12 @@ export default function verificationCheck(phone, code) {
                 code
             }
         }).then(response => {
-            return dispatch({type: HIDE_LOADER, id: VERIFICATION});
+            dispatch({type: HIDE_LOADER, id: VERIFICATION});
+
+            return dispatch({
+                type: SET_CODE,
+                code: code
+            });
 
         }).catch(error => {
             dispatch({ type: HIDE_LOADER, id: VERIFICATION });

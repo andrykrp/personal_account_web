@@ -3,30 +3,67 @@ import PropTypes from 'prop-types';
 import { I18n } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import NotificationSystem from 'react-notification-system';
 
 import RegisterForm from '../../ui/forms/registerForm/RegisterForm';
 import VerificationForm from '../../ui/forms/verificationForm/VerificationForm';
 import PasswordForm from '../../ui/forms/passwordForm/PasswordForm';
+import Modal from '../../ui/common/modal/Modal';
 
 import verification from '../../../actions/register/verification';
 import verificationCheck from '../../../actions/register/verificationCheck';
 import registration from '../../../actions/register/registration';
 import redirect from '../../../actions/redirect';
+import showNotification from '../../../actions/notification/show';
+import setTimer from '../../../actions/timer';
+import login from '../../../actions/auth/login';
 
-import styles from './RegisterPage.pcss';
+import styles from './RegistrationPage.pcss';
 
-class RegisterPage extends PureComponent {
+class RegistrationPage extends PureComponent {
 
     state = {
         step: 1,
         phone: '',
-        code: ''
+        code: '',
+        showMoreInfoModal: false
     };
 
-    handleSetRef = (refName) => component => {
-        this[refName] = component;
-    };
+    componentDidMount() {
+        const { params: { step }, phone, code } = this.props;
+
+        if (this.props.authorized) {
+            this.props.actions.redirect('/');
+        }
+
+        if (step === 'step1') {
+            this.setState({
+                step: 1
+            });
+        }
+        if (step === 'step2') {
+            if (phone) {
+                this.setState({
+                    step: 2
+                });
+            } else {
+                this.setState({
+                    step: 1
+                });
+            }
+
+        }
+        if (step === 'step3') {
+            if (phone && code) {
+                this.setState({
+                    step: 3
+                });
+            } else {
+                this.setState({
+                    step: 1
+                });
+            }
+        }
+    }
 
     handleSubmitRegisterForm = (phone) => {
 
@@ -36,54 +73,29 @@ class RegisterPage extends PureComponent {
                 phone: phone
             });
 
-            return;
-        }).catch(() => {
-            this.notification.addNotification({
-                title: 'Error',
-                message: 'Login failed',
-                autoDismiss: 3,
-                level: 'error',
-                position: 'tr'
-            });
+            this.props.actions.setTimer(new Date().getTime() + 90000);
+            this.props.actions.redirect('/register/step2');
         });
     };
 
     handleSubmitVerificationForm = (code) => {
-        const {phone} = this.state;
+        const { phone } = this.props;
 
         this.props.actions.verificationCheck(phone, code).then(() => {
             this.setState({
                 step: 3,
                 code: code
             });
-
-            return;
-        }).catch(() => {
-            this.notification.addNotification({
-                title: 'Error',
-                message: 'Login failed',
-                autoDismiss: 3,
-                level: 'error',
-                position: 'tr'
-            });
+            this.props.actions.redirect('/register/step3');
         });
     };
 
     handleSubmitPasswordForm = (password) => {
-        const {phone, code} = this.state;
+        const { phone, code } = this.props;
 
         this.props.actions.registration(phone, code, password).then(() => {
+            this.props.actions.login(phone, password);
             this.props.actions.redirect('/register/success');
-
-            return;
-        }).catch(() => {
-            this.notification.addNotification({
-                title: 'Error',
-                message: 'Login failed',
-                autoDismiss: 3,
-                level: 'error',
-                position: 'tr'
-            });
         });
     };
 
@@ -91,11 +103,29 @@ class RegisterPage extends PureComponent {
         this.props.actions.redirect('/login');
     };
 
+    handleClickMoreInfo = () => {
+        this.setState({
+            showMoreInfoModal: true
+        });
+    };
+
+    handleCloseModal = () => {
+        this.setState({
+            showMoreInfoModal: false
+        });
+    };
+
+    handleSendRetry = () => {
+        this.props.actions.setTimer(new Date().getTime() + 90000);
+    };
+
     render() {
-        const { step } = this.state;
+        const
+            { phone } = this.props,
+            { step, showMoreInfoModal } = this.state;
 
         return (
-            <I18n ns="translations">
+            <I18n ns='translations'>
                 {
                     (t) => (
                         <div className={styles.wrapper}>
@@ -119,9 +149,11 @@ class RegisterPage extends PureComponent {
                                 step === 2 && (
                                     <div>
                                         <h2 className={styles.title}>{t('registerPage.step_2.title')}</h2>
-                                        <p className={styles.label}>{t('registerPage.step_2.comment')}</p>
+                                        <p className={styles.label}>{t('registerPage.step_2.comment')} {phone}</p>
                                         <VerificationForm
                                             onSubmit={this.handleSubmitVerificationForm}
+                                            timer={this.props.timer}
+                                            onClickSendRetry={this.handleSendRetry}
                                         />
                                     </div>
                                 )
@@ -130,24 +162,44 @@ class RegisterPage extends PureComponent {
                                 step === 3 && (
                                     <div>
                                         <p className={styles.label}>{t('registerPage.step_3.comment')}</p>
+                                        <a onClick={this.handleClickMoreInfo}
+                                           className={styles.linkInfo}>{t('registerPage.step_3.moreInfo')}</a>
                                         <PasswordForm
                                             onSubmit={this.handleSubmitPasswordForm}
                                         />
                                     </div>
                                 )
                             }
-                            <NotificationSystem ref={this.handleSetRef('notification')} />
+                            {
+                                showMoreInfoModal && (
+                                    <Modal>
+                                        <div>
+                                            <div className={styles.closeWrapper} onClick={this.handleCloseModal}>
+                                                <img className={styles.logo} src='/img/close.svg' />
+                                            </div>
+                                            <h2 className={styles.title}>{t('registerPage.step_3.titleMoreInfo')}</h2>
+                                            <p className={styles.label}>{t('registerPage.step_3.requirements')}</p>
+                                        </div>
+                                    </Modal>
+                                )
+                            }
                         </div>
                     )
                 }
             </I18n>
-        )
+        );
     }
 }
 
-function mapStateToProps() {
+function mapStateToProps(state, props) {
+    const { registration: { phone, code }, application: { authorized }, timer: { timer } } = state;
 
-    return {};
+    return {
+        phone,
+        code,
+        authorized,
+        timer
+    };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -156,9 +208,12 @@ function mapDispatchToProps(dispatch) {
             verification,
             registration,
             verificationCheck,
-            redirect
+            redirect,
+            showNotification,
+            setTimer,
+            login
         }, dispatch)
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationPage);

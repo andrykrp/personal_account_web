@@ -18,11 +18,11 @@ export default class Checkbox extends PureComponent {
         const { value, onClick, label } = this.props;
         const checkboxClasses = styleContext({
                 checkbox: true,
-                checkboxOn: true
+                checkboxOn: value
             });
 
         return (
-            <I18n ns="translations">
+            <I18n ns='translations'>
                 {
                     (t) => (
                         <div className={styles.wrapper} onClick={onClick}>
@@ -32,6 +32,6 @@ export default class Checkbox extends PureComponent {
                     )
                 }
             </I18n>
-        )
+        );
     }
 }

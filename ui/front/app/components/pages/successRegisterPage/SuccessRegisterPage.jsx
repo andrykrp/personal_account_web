@@ -8,6 +8,8 @@ import ArrowButton from '../../ui/common/arrowButton/ArrowButton';
 
 import redirect from '../../../actions/redirect';
 
+import {formatWalletNumber} from '../../../utils/format';
+
 import styles from './SuccessRegisterPage.pcss';
 
 class SuccessRegisterPage extends PureComponent {
@@ -15,6 +17,12 @@ class SuccessRegisterPage extends PureComponent {
     static propTypes = {
         walletNumber: PropTypes.number
     };
+
+    componentDidMount() {
+        if (!this.props.walletNumber) {
+            this.props.actions.redirect('/login');
+        }
+    }
 
     handleRedirectToHome = () => {
         this.props.actions.redirect('/demo');
@@ -28,7 +36,7 @@ class SuccessRegisterPage extends PureComponent {
         const { walletNumber } = this.props;
 
         return (
-            <I18n ns="translations">
+            <I18n ns='translations'>
                 {
                     (t) => (
                         <div className={styles.wrapper}>
@@ -38,7 +46,7 @@ class SuccessRegisterPage extends PureComponent {
                             <h2 className={styles.header}>{t('successRegistrationPage.header')}</h2>
                             <div className={styles.info}>
                                 <p className={styles.infoText}>{t('successRegistrationPage.info')}</p>
-                                <p className={styles.infoNumber}>{walletNumber}</p>
+                                <p className={styles.infoNumber}>{formatWalletNumber(walletNumber)}</p>
                             </div>
                             <div className={styles.wrapperArrowButtons}>
                                 <div
@@ -56,7 +64,7 @@ class SuccessRegisterPage extends PureComponent {
                     )
                 }
             </I18n>
-        )
+        );
     }
 }
 

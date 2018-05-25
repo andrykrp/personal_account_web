@@ -3,18 +3,30 @@ import PropTypes from 'prop-types';
 import { I18n, translate } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
-import { Header } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import NotificationSystem from 'react-notification-system';
 
-import LoginForm from '../../ui/forms/loginForm/LoginForm'
+import LoginForm from '../../ui/forms/loginForm/LoginForm';
+import Modal from '../../ui/common/modal/Modal';
 
 import login from '../../../actions/auth/login';
 import redirect from '../../../actions/redirect';
+import checkAuthorized from '../../../actions/auth/checkAuthorized';
+import getUser from '../../../actions/auth/getUser';
 
 import styles from './LoginPage.pcss';
 
 class LoginPage extends PureComponent {
+
+    state = {
+        showForgotPasswordModal: false
+    };
+
+    componentDidMount() {
+        this.props.actions.checkAuthorized().then(() => {
+            this.props.actions.redirect('/');
+        });
+    };
 
     handleSetRef = (refName) => component => {
         this[refName] = component;
@@ -23,8 +35,7 @@ class LoginPage extends PureComponent {
     handleSignIn = (login, password) => {
 
         this.props.actions.login(login, password).then(() => {
-            this.props.actions.redirect('/demo');
-            return;
+
         }).catch(() => {
             this.notification.addNotification({
                 title: 'Error',
@@ -36,10 +47,23 @@ class LoginPage extends PureComponent {
         });
     };
 
+    handleForgetPassword = () => {
+      this.setState({
+          showForgotPasswordModal: true
+      });
+    };
+
+    handleCloseModal = () => {
+      this.setState({
+          showForgotPasswordModal: false
+      });
+    };
 
     render() {
+        const {showForgotPasswordModal} =this.state;
+
         return (
-            <I18n ns="translations">
+            <I18n ns='translations'>
                 {
                     (t) => (
                         <div className={styles.wrapper}>
@@ -48,6 +72,7 @@ class LoginPage extends PureComponent {
                             </div>
                             <LoginForm
                                 onSubmit={this.handleSignIn}
+                                onClickForgetPassword={this.handleForgetPassword}
                             />
                             <div className={styles.socialBlock}>
                                 <p className={styles.socialBlockTitle}>
@@ -69,7 +94,7 @@ class LoginPage extends PureComponent {
                                 <span className={styles.label}>{t('loginPage.notAccount')}</span>
                                 <Link
                                     className={styles.linkSignUp}
-                                    to={`/register`}>
+                                    to={'/register'}>
                                     {t('loginPage.signUp')}
                                 </Link>
                             </div>
@@ -79,11 +104,24 @@ class LoginPage extends PureComponent {
                                 </button>
                             </div>
                             <NotificationSystem ref={this.handleSetRef('notification')} />
+                            {
+                                showForgotPasswordModal && (
+                                    <Modal>
+                                        <div className={styles.modalWrapper}>
+                                            <div className={styles.closeWrapper} onClick={this.handleCloseModal}>
+                                                <img className={styles.logo} src='/img/close.svg' />
+                                            </div>
+                                            <h2 className={styles.title}>{t('loginPage.resetPasswordTitle')}</h2>
+                                            <p className={styles.description}>{t('loginPage.resetPasswordDesc')}</p>
+                                        </div>
+                                    </Modal>
+                                )
+                            }
                         </div>
                     )
                 }
             </I18n>
-        )
+        );
     }
 }
 
@@ -96,7 +134,9 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
             login,
-            redirect
+            redirect,
+            checkAuthorized,
+            getUser
         }, dispatch)
     };
 }

@@ -12,22 +12,18 @@ class InputForm extends PureComponent {
         value: PropTypes.string,
         placeholder: PropTypes.string,
         name: PropTypes.string,
-        type: PropTypes.string
+        type: PropTypes.string,
+        maxLength: PropTypes.number,
+        minLength: PropTypes.number
     };
 
-    static defaultProps  = {
+    static defaultProps = {
         type: 'string'
-    };
-
-    state = {
-        labelShow: this.props.value !== ''
     };
 
     render() {
         const
-            { onChange, placeholder, value, name, type } = this.props,
-            { labelShow } = this.state;
-
+            { onChange, placeholder, value, name, type, maxLength, minLength } = this.props;
         const labelClasses = styleContext({
             label: true,
             labelHide: value === ''
@@ -45,6 +41,8 @@ class InputForm extends PureComponent {
                        onChange={onChange}
                        className={styles.input}
                        type={type}
+                       maxLength={maxLength}
+                       minLength={minLength}
                 />
             </div>
         )

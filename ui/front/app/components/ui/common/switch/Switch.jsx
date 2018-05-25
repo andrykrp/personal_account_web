@@ -27,7 +27,7 @@ export default class Switch extends PureComponent {
             });
 
         return (
-            <I18n ns="translations">
+            <I18n ns='translations'>
                 {
                     (t) => (
                         <div className={wrapperClasses} onClick={onClick}>
@@ -36,6 +36,6 @@ export default class Switch extends PureComponent {
                     )
                 }
             </I18n>
-        )
+        );
     }
 }

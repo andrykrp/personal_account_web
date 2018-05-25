@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { pathOr } from 'ramda';
 
-import store from 'store/store';
+import {store} from 'store/store';
 
 import { API_HOST } from 'constants/environment';
 

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { ConnectedRouter } from 'react-router-redux';
 import { Switch } from 'react-router-dom';
 import { map, isEmpty } from 'ramda';
 import { bindActionCreators } from 'redux';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import AppRoute from 'components/layout/appRoute/AppRoute';
 
@@ -12,25 +12,30 @@ import NotFoundPage from 'components/pages/notFoundPage/NotFoundPage';
 import history from 'constants/history';
 import routes from 'constants/routes';
 
-const Routes = () => (
+class Routes extends PureComponent {
 
-    <ConnectedRouter history={history}>
-        <Switch>
-            {
-                map(routeProps => (
+    render() {
+        return (
+            <ConnectedRouter history={history}>
+                <Switch>
+                    {
+                        map(routeProps => (
+                            <AppRoute
+                                key={routeProps.path}
+                                {...routeProps}
+                            />
+                        ), routes)
+                    }
                     <AppRoute
-                        key={routeProps.path}
-                        {...routeProps}
+                        path='*'
+                        component={NotFoundPage}
                     />
-                ), routes)
-            }
-            <AppRoute
-                path='*'
-                component={NotFoundPage}
-            />
-        </Switch>
-    </ConnectedRouter>
-);
+                </Switch>
+            </ConnectedRouter>
+        );
+    }
+}
+
 
 function mapStateToProps(state) {
     const { loaders } = state;

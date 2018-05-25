@@ -2,15 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import store from 'store/store';
+import { store, persistor } from 'store/store';
 import Routes from 'components/layout/routes/Routes';
+import Notification from 'components/ui/single/notification/Notification';
 
 import './i18n';
 
 function render(Component) {
     ReactDOM.render(
         <Provider store={store}>
-            <Component />
+            <PersistGate loading={null} persistor={persistor}>
+                <Component />
+                <Notification />
+            </PersistGate>
         </Provider>,
         document.getElementById('root')
     );
