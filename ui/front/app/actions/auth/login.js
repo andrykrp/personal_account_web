@@ -7,7 +7,7 @@ export default function register(login, password) {
         dispatch({type: SHOW_LOADER, id: SIGN_IN});
 
         return request({
-            url: 'https://ubcoin.garmash.org/api/auth',
+            url: '/api/auth',
             method: 'POST',
             data: {
                 login,
