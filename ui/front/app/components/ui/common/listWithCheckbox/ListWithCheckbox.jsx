@@ -1,8 +1,10 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {I18n} from 'react-i18next';
+import { I18n } from 'react-i18next';
+import { map, contains } from 'ramda';
 
 import Checkbox from '../checkbox/Checkbox';
+import Switch from '../switch/Switch';
 
 import styles from './ListWithCheckbox.pcss';
 
@@ -11,23 +13,52 @@ export default class ListWithCheckbox extends PureComponent {
         list: PropTypes.array,
         maxSelect: PropTypes.number,
         title: PropTypes.string,
-        selectArray: PropTypes.array
+        selectArray: PropTypes.array,
+        onClickRow: PropTypes.func
     };
 
-    renderRowList = (item) => {
-
+    handleClickRow = (id) => {
+        const {selectArray, maxSelect} = this.props;
+      if (contains(id, selectArray) && selectArray.length >= maxSelect || selectArray.length < maxSelect) {
+          this.props.onClickRow(id);
+      }
     };
+
+    renderRowList = (item) => (
+        <div key={item.id} className={styles.row} onClick={() => this.handleClickRow(item.id)}>
+            <div className={styles.rowName}>
+                <span>{item.name}</span>
+                <span>{item.symbol}</span>
+                </div>
+            <Switch
+                disabled={!contains(item.id, this.props.selectArray) && this.props.selectArray.length >= this.props.maxSelect}
+                value={contains(item.id, this.props.selectArray)}
+                onClick={() => this.handleClickRow(item.id)} />
+        </div>
+    );
 
     render() {
-        const {list, maxSelect, title} = this.props;
+        const { list, maxSelect, title, selectArray } = this.props;
 
         return (
             <I18n ns='translations'>
                 {
                     (t) => (
                         <div className={styles.wrapper}>
+                            <div className={styles.headerRow}>
+                                <span>
+                                    {title}
+                                </span>
+                                <span>
+                                    Выбрано {selectArray.length} из {maxSelect}
+                                </span>
+                            </div>
                             <div>
-
+                                {
+                                    map((item) => {
+                                        return this.renderRowList(item);
+                                    }, list)
+                                }
                             </div>
                         </div>
                     )

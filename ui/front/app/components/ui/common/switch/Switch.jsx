@@ -10,27 +10,43 @@ const styleContext = classNames.bind(styles);
 export default class Switch extends PureComponent {
     static propTypes = {
         onClick: PropTypes.func,
-        value: PropTypes.bool
+        value: PropTypes.bool,
+        disabled: PropTypes.bool
+    };
+
+    static defaultProps = {
+        disabled: false
+    };
+
+    handleClick = () => {
+        if (!this.props.disabled) {
+            this.props.onClick();
+        } else {
+
+        }
+
     };
 
     render() {
-        const { value, onClick } = this.props;
+        const { value, disabled } = this.props;
         const
             switchClasses = styleContext({
                 switch: true,
                 switchOn: value,
-                switchOff: !value
+                switchOff: !value,
+                disabledSwitch: disabled
             }),
             wrapperClasses = styleContext({
                 wrapper: true,
-                wrapperOn: value
+                wrapperOn: value,
+                disabledWrapper: disabled
             });
 
         return (
             <I18n ns='translations'>
                 {
                     (t) => (
-                        <div className={wrapperClasses} onClick={onClick}>
+                        <div className={wrapperClasses} onClick={this.handleClick}>
                             <div className={switchClasses} />
                         </div>
                     )
