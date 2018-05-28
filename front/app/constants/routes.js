@@ -1,5 +1,4 @@
-import DemoPage from 'components/pages/demoPage/DemoPage';
-import SecondDemoPage from 'components/pages/secondDemoPage/SecondDemoPage';
+import HomePage from '../components/pages/homePage/HomePage';
 import LoginPage from '../components/pages/loginPage/LoginPage';
 import RegistrationPage from '../components/pages/registrationPage/RegistrationPage';
 import SuccessRegisterPage from '../components/pages/successRegisterPage/SuccessRegisterPage';
@@ -26,13 +25,17 @@ export default [
         component: SuccessRegisterPage,
         title: 'SuccessRegisterPage'
     },{
+        path: '/register/:step',
+        component: RegistrationPage,
+        title: 'RegistrationPage'
+    },{
         path: '/start-settings',
         component: StartSettingsPage,
         title: 'StartSettingsPage'
     },
     {
         path: '/demo',
-        component: DemoPage,
-        title: 'DemoPage'
+        component: HomePage,
+        title: 'HomePage'
     }
 ];
