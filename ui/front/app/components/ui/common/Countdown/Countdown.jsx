@@ -28,7 +28,7 @@ function addLeadingZero(value) {
 
 export default class Countdown extends PureComponent {
     static propTypes = {
-        target: PropTypes.number.isRequired,
+        target: PropTypes.number,
         onExpired: PropTypes.func
     };
 
@@ -38,11 +38,29 @@ export default class Countdown extends PureComponent {
     };
 
     componentDidMount() {
+        if (!this.props.target) {
+            return;
+        }
+
         this.checkTime();
 
         if (this.state.expired === false) {
-            setInterval(this.checkTime, 500);
+            this.intervalId = setInterval(this.checkTime, 500);
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.target && nextProps.target) {
+            this.checkTime();
+
+            if (this.state.expired === false) {
+                this.intervalId = setInterval(this.checkTime, 500);
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalId);
     }
 
     checkTime = () => {
@@ -60,15 +78,13 @@ export default class Countdown extends PureComponent {
     };
 
     render() {
+        const { target } = this.props;
         const { expired, value } = this.state;
 
-        return !expired && (
-            <I18n ns='translations'> {
-                (t) => (
-                    <span className={styles.label}>
+        return !expired && !!target && (
+            <span className={styles.label}>
                 {value}
-            </span>)}
-            </I18n>
+            </span>
         );
     }
 }
