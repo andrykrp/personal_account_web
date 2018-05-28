@@ -28,12 +28,11 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin({
             filename: 'bundle.css'
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
         })
-        // todo раскомментировать
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: {
-        //         warnings: false
-        //     }
-        // })
     ]
 };
