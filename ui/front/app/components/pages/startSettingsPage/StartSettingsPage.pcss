@@ -94,3 +94,36 @@
     font-weight: 400;
     margin-bottom: 10px;
 }
+
+.wrapperModal {
+    background-color: #fff;
+    height: calc(100% - 60px);
+    padding: 10px 15px;
+}
+
+.resultRow {
+    padding: 15px 30px 15px 0;
+    font-size: 20px;
+    border-bottom: 1px solid #efefef;
+    font-weight: 400;
+}
+
+.selectedRow {
+    padding: 15px 30px 15px 0;
+    font-size: 20px;
+    border-bottom: 1px solid #efefef;
+    font-weight: 400;
+    position: relative;
+}
+
+.selectedRow:after {
+    content: '✔';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 26px;
+}

@@ -1,4 +1,4 @@
-import {SET_PHONE, SET_CODE, RESET_REGESTRATION} from '../constants/actionTypes';
+import {SET_PHONE, SET_CODE, RESET_REGISTRATION} from '../constants/actionTypes';
 
 function getInitialState() {
     return {
@@ -19,7 +19,7 @@ export default ((state = getInitialState(), {type, ...payload}) => {
                 ...state,
                 code: payload.code
             };
-        case RESET_REGESTRATION:
+        case RESET_REGISTRATION:
             return {
                 ...state,
                 phone: null,

@@ -1,5 +1,5 @@
 import request from '../../utils/request';
-import { SHOW_LOADER, HIDE_LOADER, SET_WALLET_NUMBER, RESET_REGESTRATION } from '../../constants/actionTypes';
+import { SHOW_LOADER, HIDE_LOADER, SET_WALLET_NUMBER, RESET_REGISTRATION } from '../../constants/actionTypes';
 import { VERIFICATION } from '../../constants/loaders';
 
 export default function registration(phone, code, password) {
@@ -18,7 +18,7 @@ export default function registration(phone, code, password) {
             dispatch({type: HIDE_LOADER, id: VERIFICATION});
 
             dispatch({
-                type: RESET_REGESTRATION
+                type: RESET_REGISTRATION
             });
 
             return dispatch({

@@ -3,46 +3,23 @@ import PropTypes from 'prop-types';
 import { I18n } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { contains, append, without, pipe, filter, map, join } from 'ramda';
+import { contains, append, without, pipe, filter, map, join, isEmpty, equals } from 'ramda';
 
 import Switch from '../../ui/common/switch/Switch';
 import Checkbox from '../../ui/common/checkbox/Checkbox';
 import ArrowInput from '../../ui/common/arrowInput/ArrowInput';
 import Modal from '../../ui/common/modal/Modal';
 import Header from '../../ui/common/header/Header';
+import HeaderWithSearch from '../../ui/common/headerWithSearch/HeaderWithSearch';
 import ListWithCheckbox from '../../ui/common/listWithCheckbox/ListWithCheckbox';
 
 import redirect from '../../../actions/redirect';
+import getListCurrencies from '../../../actions/getListCurrencies';
+import findGeoLocation from '../../../actions/findGeoLocation';
+
+import { mapIndex, isNotEmpty } from '../../../utils/lomda';
 
 import styles from './StartSettingsPage.pcss';
-
-const listCurrency = [
-    {
-        'id': '2',
-        'name': 'Евро',
-        'symbol': '\u20AC'
-    },
-    {
-        'id': '1',
-        'name': 'Рубли',
-        'symbol': '\u20BD'
-    },
-    {
-        'id': '3',
-        'name': 'франки',
-        'symbol': '\u20A3'
-    },
-    {
-        'id': '5',
-        'name': 'Иена',
-        'symbol': '\u00A5'
-    },
-    {
-        'id': '6',
-        'name': 'Донг',
-        'symbol': '\u20AB'
-    }
-];
 
 class StartSettingsPage extends PureComponent {
     state = {
@@ -51,7 +28,22 @@ class StartSettingsPage extends PureComponent {
         showModalCurrency: false,
         selectCurrencies: [],
         checkSms: false,
-        showModalGeoLocation: false
+        showModalGeoLocation: false,
+        searchString: '',
+        searchResultGeoLocation: [],
+        selectGeoLocation: {}
+    };
+
+    static defaultProps = {
+        listCurrencies: []
+    };
+
+    componentDidMount() {
+        const { listCurrencies, actions } = this.props;
+
+        if (isEmpty(listCurrencies)) {
+            actions.getListCurrencies();
+        }
     };
 
     handleRedirectToBack = () => {
@@ -61,6 +53,12 @@ class StartSettingsPage extends PureComponent {
     handleClickSwitchGeoLocation = () => {
         this.setState({
             geoLocationOn: !this.state.geoLocationOn
+        }, () => {
+            if (!this.state.geoLocationOn) {
+                this.setState({
+                    selectGeoLocation: {}
+                });
+            }
         });
     };
 
@@ -100,26 +98,51 @@ class StartSettingsPage extends PureComponent {
     };
 
     handleClickGeoLocation = () => {
-      this.setState({
-          showModalGeoLocation: true
-      }) ;
+        if (this.state.geoLocationOn) {
+            this.setState({
+                showModalGeoLocation: true
+            });
+        }
     };
 
     handleCloseGeoLocationModal = () => {
-      this.setState({
-          showModalGeoLocation: false
-      }) ;
+        this.setState({
+            showModalGeoLocation: false,
+            searchString: '',
+            searchResultGeoLocation: []
+        });
+    };
+
+    handleChangeSearch = value => {
+        this.setState({
+            searchString: value
+        }, () => {
+            if (this.state.searchString.length > 3) {
+                this.props.actions.findGeoLocation(this.state.searchString).then(response => {
+                    this.setState({
+                        searchResultGeoLocation: response.data
+                    });
+                });
+            }
+        });
+    };
+
+    handleSelectGeoLocation = (item) => {
+        this.setState({
+            selectGeoLocation: item
+        });
     };
 
     render() {
         const
-            { geoLocationOn, twoFactorAuth, showModalCurrency, selectCurrencies, checkSms, showModalGeoLocation } = this.state;
+            { listCurrencies } = this.props,
+            { geoLocationOn, twoFactorAuth, showModalCurrency, selectCurrencies, checkSms, showModalGeoLocation, searchString, searchResultGeoLocation, selectGeoLocation } = this.state;
 
         let stringCurrencies = pipe(
-            filter(({id}) => contains(id, selectCurrencies)),
-            map(({name, symbol}) => `${name} (${symbol})`),
+            filter(({ id }) => contains(id, selectCurrencies)),
+            map(({ description, character }) => `${description} (${character})`),
             join(', ')
-        )(listCurrency);
+        )(listCurrencies);
 
         return (
             <I18n ns='translations'>
@@ -138,8 +161,9 @@ class StartSettingsPage extends PureComponent {
                                             </span>
                                         )
                                     }
-                                    <ArrowInput label={selectCurrencies.length > 0 ? stringCurrencies : t('startSettingsPage.settingThree.title')}
-                                                onClick={this.handleOpenModalCurrency} />
+                                    <ArrowInput
+                                        label={selectCurrencies.length > 0 ? stringCurrencies : t('startSettingsPage.settingThree.title')}
+                                        onClick={this.handleOpenModalCurrency} />
                                     <div className={styles.settingDesc}>{t('startSettingsPage.settingThree.desc')}</div>
                                 </div>
                                 <div className={styles.settingRow}>
@@ -150,7 +174,7 @@ class StartSettingsPage extends PureComponent {
                                             className={styles.settingDesc}>{t('startSettingsPage.settingOne.desc')}</div>
                                         <div
                                             onClick={this.handleClickGeoLocation}
-                                            className={styles.settingLocationName}>{t('startSettingsPage.settingOne.locationUndefined')}</div>
+                                            className={styles.settingLocationName}>{isNotEmpty(selectGeoLocation) ? selectGeoLocation.text : t('startSettingsPage.settingOne.locationUndefined')}</div>
 
                                     </div>
                                     <Switch value={geoLocationOn} onClick={this.handleClickSwitchGeoLocation} />
@@ -178,7 +202,7 @@ class StartSettingsPage extends PureComponent {
                                         <Header title='Выберите валюты' buttonClick={this.handleCloseModalCurrency} />
                                         <ListWithCheckbox
                                             title='Список валют'
-                                            list={listCurrency}
+                                            list={listCurrencies}
                                             maxSelect={3}
                                             selectArray={selectCurrencies}
                                             onClickRow={this.handleClickRowCurrency}
@@ -186,7 +210,28 @@ class StartSettingsPage extends PureComponent {
                                     </Modal>
                                 )
                             }
-
+                            {
+                                showModalGeoLocation && (
+                                    <Modal>
+                                        <HeaderWithSearch searchValue={searchString}
+                                                          onChangeSearchValue={this.handleChangeSearch}
+                                                          buttonClick={this.handleCloseGeoLocationModal} />
+                                        <div className={styles.wrapperModal}>
+                                            {
+                                                searchResultGeoLocation.length > 0 && mapIndex((item, index) => {
+                                                    return (
+                                                        <div key={index}
+                                                             className={equals(selectGeoLocation, item) ? styles.selectedRow : styles.resultRow}
+                                                             onClick={() => this.handleSelectGeoLocation(item)}>
+                                                            {item.text}
+                                                        </div>
+                                                    );
+                                                }, searchResultGeoLocation)
+                                            }
+                                        </div>
+                                    </Modal>
+                                )
+                            }
                         </div>
                     )
                 }
@@ -195,15 +240,20 @@ class StartSettingsPage extends PureComponent {
     }
 }
 
-function mapStateToProps() {
+function mapStateToProps(state, props) {
+    const { currencies: { listCurrencies } } = state;
 
-    return {};
+    return {
+        listCurrencies
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            redirect
+            redirect,
+            getListCurrencies,
+            findGeoLocation
         }, dispatch)
     };
 }

@@ -35,7 +35,7 @@ class LoginPage extends PureComponent {
     handleSignIn = (login, password) => {
 
         this.props.actions.login(login, password).then(() => {
-
+            this.props.actions.redirect('/');
         }).catch(() => {
             this.notification.addNotification({
                 title: 'Error',

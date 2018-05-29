@@ -45,7 +45,7 @@ class InputForm extends PureComponent {
                        minLength={minLength}
                 />
             </div>
-        )
+        );
     }
 }
 
