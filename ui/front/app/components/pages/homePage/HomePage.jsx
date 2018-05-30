@@ -26,7 +26,9 @@ class HomePage extends PureComponent {
     };
 
     handleLogout = () => {
-        this.props.actions.logout();
+        this.props.actions.logout().then(() => {
+            this.props.actions.redirect('/login');
+        });
     };
 
     handleLogin = () => {
