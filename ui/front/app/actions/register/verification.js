@@ -7,18 +7,18 @@ import showNotification from '../notification/show';
 import { SHOW_LOADER, HIDE_LOADER, SET_PHONE } from '../../constants/actionTypes';
 import { VERIFICATION } from '../../constants/loaders';
 
-export default function verification(phone) {
+export default function verification(phone, type) {
     return dispatch => {
         dispatch({ type: SHOW_LOADER, id: VERIFICATION });
 
         return request({
-            url: '/api/verification/registration',
+            url: type === 'REGISTRATION' ? '/api/verification/registration' : '/api/verification' ,
             method: 'POST',
             data: {
-                'type': 'REGISTRATION',
+                'type': type,
                 'phone': phone
             }
-        }).then(response => {
+        }).then(() => {
             dispatch({ type: HIDE_LOADER, id: VERIFICATION });
 
             return dispatch({

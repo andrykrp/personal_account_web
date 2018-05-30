@@ -19,6 +19,8 @@ export default function register(login, password) {
         }).catch(error => {
             dispatch({ type: HIDE_LOADER, id: SIGN_IN });
 
+
+
             throw error;
         });
     };

@@ -67,7 +67,7 @@ class RegistrationPage extends PureComponent {
 
     handleSubmitRegisterForm = (phone) => {
 
-        this.props.actions.verification(phone).then(() => {
+        this.props.actions.verification(phone, 'REGISTRATION').then(() => {
             this.setState({
                 step: 2,
                 phone: phone
@@ -81,7 +81,7 @@ class RegistrationPage extends PureComponent {
     handleSubmitVerificationForm = (code) => {
         const { phone } = this.props;
 
-        this.props.actions.verificationCheck(phone, code).then(() => {
+        this.props.actions.verificationCheck(phone, code, 'REGISTRATION').then(() => {
             this.setState({
                 step: 3,
                 code: code

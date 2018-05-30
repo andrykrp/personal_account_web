@@ -16,22 +16,28 @@ import redirect from '../../../actions/redirect';
 import checkAuthorized from '../../../actions/auth/checkAuthorized';
 import getUser from '../../../actions/auth/getUser';
 import setTimer from '../../../actions/timer';
+import verification from '../../../actions/register/verification';
+import verificationCheck from '../../../actions/register/verificationCheck';
 
 import styles from './LoginPage.pcss';
+import { isNotEmpty } from "../../../utils/lomda";
 
 class LoginPage extends PureComponent {
 
     state = {
         showForgotPasswordModal: false,
-        stage: 1
+        stage: 1,
+        login: ''
     };
 
     componentDidMount() {
-        this.props.actions.checkAuthorized().then(() => {
+        /*this.props.actions.checkAuthorized().then(() => {
             this.props.actions.redirect('/');
-        });
+        });*/
 
-        this.props.actions.setTimer(new Date().getTime() + 90000);
+        if (isNotEmpty(this.props.user)) {
+            this.props.actions.redirect('/');
+        }
     };
 
     handleSetRef = (refName) => component => {
@@ -39,17 +45,17 @@ class LoginPage extends PureComponent {
     };
 
     handleSignIn = (login, password) => {
-
+        this.setState({
+            login: login
+        });
         this.props.actions.login(login, password).then(() => {
             this.props.actions.redirect('/');
-        }).catch(() => {
-            this.notification.addNotification({
-                title: 'Error',
-                message: 'Login failed',
-                autoDismiss: 3,
-                level: 'error',
-                position: 'tr'
-            });
+        }).catch((error) => {
+            if (error.response.data.type === 'LOGIN') {
+                this.setState({
+                    stage: 2
+                });
+            }
         });
     };
 
@@ -67,6 +73,24 @@ class LoginPage extends PureComponent {
 
     handleSendRetry = () => {
         this.props.actions.setTimer(new Date().getTime() + 90000);
+    };
+
+    handleClickVerificationButton = () => {
+        this.props.actions.verification(this.state.login, 'LOGIN').then(() => {
+            this.props.actions.setTimer(new Date().getTime() + 90000);
+            this.setState({
+                stage: 3
+            });
+        });
+    };
+
+    handleSubmitVerificationForm = (code) => {
+        this.props.actions.verificationCheck(this.state.login, code, 'LOGIN').then(() => {
+            this.props.actions.checkAuthorized().then(() => {
+                this.props.actions.getUser();
+            });
+            this.props.actions.redirect('/');
+        });
     };
 
     render() {
@@ -127,9 +151,11 @@ class LoginPage extends PureComponent {
                                         <div className={styles.headerWrapper}>
                                             <h1 className={styles.header}>{t('loginPage.security.header')}</h1>
                                             <p className={styles.info}>{t('loginPage.security.description')}</p>
-                                            <p className={styles.warning} dangerouslySetInnerHTML={{ __html: t('loginPage.security.warning')}}/>
+                                            <p className={styles.warning}
+                                               dangerouslySetInnerHTML={{ __html: t('loginPage.security.warning') }} />
                                             <p className={styles.info}>{t('loginPage.security.comment')}</p>
                                             <Button
+                                                onClick={this.handleClickVerificationButton}
                                                 label={t('loginPage.security.buttonLabel')}
                                             />
                                         </div>
@@ -173,10 +199,11 @@ class LoginPage extends PureComponent {
 }
 
 function mapStateToProps(state, props) {
-    const { timer: { timer } } = state;
+    const { timer: { timer }, application: { user } } = state;
 
     return {
-        timer
+        timer,
+        user
     };
 }
 
@@ -188,7 +215,9 @@ function mapDispatchToProps(dispatch) {
             redirect,
             checkAuthorized,
             getUser,
-            setTimer
+            setTimer,
+            verificationCheck,
+            verification
         }, dispatch)
     };
 }

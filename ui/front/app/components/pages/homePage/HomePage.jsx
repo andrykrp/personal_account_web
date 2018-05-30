@@ -1,8 +1,8 @@
-import React, {PureComponent} from 'react';
-import {I18n} from 'react-i18next';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {isEmpty} from 'ramda';
+import React, { PureComponent } from 'react';
+import { I18n } from 'react-i18next';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { isEmpty } from 'ramda';
 
 import Header from '../../ui/common/header/Header';
 
@@ -12,13 +12,17 @@ import getUser from '../../../actions/auth/getUser';
 import checkAuthorized from '../../../actions/auth/checkAuthorized';
 
 import styles from './HomePage.pcss';
+import { isNotEmpty } from "../../../utils/lomda";
 
 class HomePage extends PureComponent {
 
-    componentDidMount() {
-        this.props.actions.checkAuthorized().catch(() => {
+    static componentDidMount() {
+        if (!isNotEmpty(this.props.user)) {
             this.props.actions.redirect('/login');
-        });
+        }
+        /* this.props.actions.checkAuthorized().catch(() => {
+             this.props.actions.redirect('/login');
+         });*/
     };
 
     handleLogout = () => {
@@ -30,7 +34,7 @@ class HomePage extends PureComponent {
     };
 
     render() {
-        const {authorized,user} = this.props;
+        const { authorized, user } = this.props;
 
         return (
             <I18n ns='translations'>
@@ -53,7 +57,7 @@ class HomePage extends PureComponent {
                                 )
                             }
                             <div className={styles.wrapperHexagon}>
-                                <img className={styles.hex} src='/img/hex.svg' alt=''/>
+                                <img className={styles.hex} src='/img/hex.svg' alt='' />
                             </div>
                             <div className={styles.wrapperText}>
                                 <h2 className={styles.header}>
@@ -62,7 +66,7 @@ class HomePage extends PureComponent {
                                 <p className={styles.smallText}>{t('homePage.desc')}</p>
                             </div>
                             <div className={styles.imgWrapper}>
-                                <img className={styles.img} src='/img/in_developing.svg' alt=''/>
+                                <img className={styles.img} src='/img/in_developing.svg' alt='' />
                             </div>
                         </div>
                     )}
@@ -72,7 +76,7 @@ class HomePage extends PureComponent {
 }
 
 function mapStateToProps(state) {
-    const {application: {walletNumber, authorized, user}} = state;
+    const { application: { walletNumber, authorized, user } } = state;
 
     return {
         walletNumber,

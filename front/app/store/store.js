@@ -11,7 +11,8 @@ import history from '../constants/history';
 
 const buildPersistedReducer = rootReducer => persistReducer({
     storage,
-    key: 'main'
+    key: 'main',
+    whitelist: ['timer', 'application', 'registration']
 }, rootReducer);
 
 function configureStore() {
