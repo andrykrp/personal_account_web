@@ -26,7 +26,9 @@ export default class Checkbox extends PureComponent {
                 {
                     (t) => (
                         <div className={styles.wrapper} onClick={onClick}>
-                            <div className={checkboxClasses} />
+                            <div className={checkboxClasses}>
+                                <div className={styles.checkOn} />
+                            </div>
                             <div className={styles.label}>{label}</div>
                         </div>
                     )
