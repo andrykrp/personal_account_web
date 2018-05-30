@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import { I18n } from 'react-i18next';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { contains, append, without, pipe, filter, map, join, isEmpty, equals } from 'ramda';
+import {I18n} from 'react-i18next';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {contains, append, without, pipe, filter, map, join, isEmpty, equals} from 'ramda';
 
 import Switch from '../../ui/common/switch/Switch';
 import Checkbox from '../../ui/common/checkbox/Checkbox';
@@ -17,7 +17,7 @@ import redirect from '../../../actions/redirect';
 import getListCurrencies from '../../../actions/getListCurrencies';
 import findGeoLocation from '../../../actions/findGeoLocation';
 
-import { mapIndex, isNotEmpty } from '../../../utils/lomda';
+import {mapIndex, isNotEmpty} from '../../../utils/lomda';
 
 import styles from './StartSettingsPage.pcss';
 
@@ -39,7 +39,7 @@ class StartSettingsPage extends PureComponent {
     };
 
     componentDidMount() {
-        const { listCurrencies, actions } = this.props;
+        const {listCurrencies, actions} = this.props;
 
         if (isEmpty(listCurrencies)) {
             actions.getListCurrencies();
@@ -88,7 +88,7 @@ class StartSettingsPage extends PureComponent {
     };
 
     handleClickRowCurrency = (id) => {
-        const { selectCurrencies } = this.state;
+        const {selectCurrencies} = this.state;
 
         this.setState({
             selectCurrencies: contains(id, selectCurrencies)
@@ -98,11 +98,9 @@ class StartSettingsPage extends PureComponent {
     };
 
     handleClickGeoLocation = () => {
-        if (this.state.geoLocationOn) {
-            this.setState({
-                showModalGeoLocation: true
-            });
-        }
+        this.setState({
+            showModalGeoLocation: true
+        });
     };
 
     handleCloseGeoLocationModal = () => {
@@ -135,12 +133,12 @@ class StartSettingsPage extends PureComponent {
 
     render() {
         const
-            { listCurrencies } = this.props,
-            { geoLocationOn, twoFactorAuth, showModalCurrency, selectCurrencies, checkSms, showModalGeoLocation, searchString, searchResultGeoLocation, selectGeoLocation } = this.state;
+            {listCurrencies} = this.props,
+            {geoLocationOn, twoFactorAuth, showModalCurrency, selectCurrencies, checkSms, showModalGeoLocation, searchString, searchResultGeoLocation, selectGeoLocation} = this.state;
 
         let stringCurrencies = pipe(
-            filter(({ id }) => contains(id, selectCurrencies)),
-            map(({ description, character }) => `${description} (${character})`),
+            filter(({id}) => contains(id, selectCurrencies)),
+            map(({description, character}) => `${description} (${character})`),
             join(', ')
         )(listCurrencies);
 
@@ -149,7 +147,7 @@ class StartSettingsPage extends PureComponent {
                 {
                     (t) => (
                         <div className={styles.wrapper}>
-                            <Header buttonClick={this.handleRedirectToBack} title={t('startSettingsPage.title')} />
+                            <Header buttonClick={this.handleRedirectToBack} title={t('startSettingsPage.title')}/>
 
                             <div className={styles.content}>
 
@@ -163,21 +161,25 @@ class StartSettingsPage extends PureComponent {
                                     }
                                     <ArrowInput
                                         label={selectCurrencies.length > 0 ? stringCurrencies : t('startSettingsPage.settingThree.title')}
-                                        onClick={this.handleOpenModalCurrency} />
+                                        onClick={this.handleOpenModalCurrency}/>
                                     <div className={styles.settingDesc}>{t('startSettingsPage.settingThree.desc')}</div>
                                 </div>
+                                <div className={styles.settingColumn}>
                                 <div className={styles.settingRow}>
                                     <div className={styles.settingContent}>
                                         <div
                                             className={styles.settingTitle}>{t('startSettingsPage.settingOne.title')}</div>
                                         <div
                                             className={styles.settingDesc}>{t('startSettingsPage.settingOne.desc')}</div>
-                                        <div
-                                            onClick={this.handleClickGeoLocation}
-                                            className={styles.settingLocationName}>{isNotEmpty(selectGeoLocation) ? selectGeoLocation.text : t('startSettingsPage.settingOne.locationUndefined')}</div>
-
                                     </div>
-                                    <Switch value={geoLocationOn} onClick={this.handleClickSwitchGeoLocation} />
+                                    <Switch value={geoLocationOn} onClick={this.handleClickSwitchGeoLocation}/>
+                                </div>
+                                <ArrowInput
+                                    label={isNotEmpty(selectGeoLocation) ? selectGeoLocation.text : t('startSettingsPage.settingOne.locationUndefined')}
+                                    onClick={this.handleClickGeoLocation}
+                                    grey={!isNotEmpty(selectGeoLocation)}
+                                />
+
                                 </div>
 
                                 <div className={styles.settingRow}>
@@ -188,18 +190,18 @@ class StartSettingsPage extends PureComponent {
                                             className={styles.settingDesc}>{t('startSettingsPage.settingTwo.desc')}</div>
 
                                     </div>
-                                    <Switch value={twoFactorAuth} onClick={this.handleClickSwitchTwoFactorAuth} />
+                                    <Switch value={twoFactorAuth} onClick={this.handleClickSwitchTwoFactorAuth}/>
                                 </div>
                                 {
                                     twoFactorAuth && (
                                         <Checkbox label={t('startSettingsPage.settingTwo.withSMS')} value={checkSms}
-                                                  onClick={this.handleClickCheckbox} />)
+                                                  onClick={this.handleClickCheckbox}/>)
                                 }
                             </div>
                             {
                                 showModalCurrency && (
                                     <Modal>
-                                        <Header title='Выберите валюты' buttonClick={this.handleCloseModalCurrency} />
+                                        <Header title='Выберите валюты' buttonClick={this.handleCloseModalCurrency}/>
                                         <ListWithCheckbox
                                             title='Список валют'
                                             list={listCurrencies}
@@ -215,7 +217,7 @@ class StartSettingsPage extends PureComponent {
                                     <Modal>
                                         <HeaderWithSearch searchValue={searchString}
                                                           onChangeSearchValue={this.handleChangeSearch}
-                                                          buttonClick={this.handleCloseGeoLocationModal} />
+                                                          buttonClick={this.handleCloseGeoLocationModal}/>
                                         <div className={styles.wrapperModal}>
                                             {
                                                 searchResultGeoLocation.length > 0 && mapIndex((item, index) => {
@@ -241,7 +243,7 @@ class StartSettingsPage extends PureComponent {
 }
 
 function mapStateToProps(state, props) {
-    const { currencies: { listCurrencies } } = state;
+    const {currencies: {listCurrencies}} = state;
 
     return {
         listCurrencies

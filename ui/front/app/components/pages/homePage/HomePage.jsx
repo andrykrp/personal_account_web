@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { isEmpty } from 'ramda';
 
 import Header from '../../ui/common/header/Header';
+import LoginPage from '../../pages/loginPage/LoginPage';
 
 import redirect from '../../../actions/redirect';
 import logout from '../../../actions/auth/logout';
@@ -17,9 +18,9 @@ import { isNotEmpty } from "../../../utils/lomda";
 class HomePage extends PureComponent {
 
     static componentDidMount() {
-        if (!isNotEmpty(this.props.user)) {
+        /*if (!isNotEmpty(this.props.user)) {
             this.props.actions.redirect('/login');
-        }
+        }*/
         /* this.props.actions.checkAuthorized().catch(() => {
              this.props.actions.redirect('/login');
          });*/
@@ -42,35 +43,33 @@ class HomePage extends PureComponent {
             <I18n ns='translations'>
                 {
                     (t) => (
-                        <div className={styles.wrapper}>
-                            {
-                                authorized && (
-                                    <Header
-                                        title={user.phone}
-                                        typeButton='logout'
-                                        buttonClick={this.handleLogout}
-                                    />
-                                ) || (
-                                    <Header
-                                        title={t('homePage.header')}
-                                        typeButton='login'
-                                        buttonClick={this.handleLogin}
-                                    />
-                                )
-                            }
-                            <div className={styles.wrapperHexagon}>
-                                <img className={styles.hex} src='/img/hex.svg' alt='' />
+                        authorized && (
+                            <div className={styles.wrapper}>
+
+                                <div className={styles.wrapperHexagon}>
+                                    <img className={styles.hex} src='/img/hex.svg' alt='' />
+                                </div>
+
+                                <div className={styles.smallText}>
+                                    Пользователь: {user.phone}
+                                </div>
+                                <button className={styles.button} onClick={this.handleLogout}>Выход</button>
+
+
+                                <div className={styles.wrapperText}>
+                                    <h2 className={styles.header}>
+                                        {t('homePage.header')}
+                                    </h2>
+                                    <p className={styles.smallText}>{t('homePage.desc')}</p>
+                                </div>
+                                <div className={styles.imgWrapper}>
+                                    <img className={styles.img} src='/img/in_developing.svg' alt='' />
+                                </div>
                             </div>
-                            <div className={styles.wrapperText}>
-                                <h2 className={styles.header}>
-                                    {t('homePage.header')}
-                                </h2>
-                                <p className={styles.smallText}>{t('homePage.desc')}</p>
-                            </div>
-                            <div className={styles.imgWrapper}>
-                                <img className={styles.img} src='/img/in_developing.svg' alt='' />
-                            </div>
-                        </div>
+                        ) || (
+                            <LoginPage/>
+                        )
+
                     )}
             </I18n>
         );

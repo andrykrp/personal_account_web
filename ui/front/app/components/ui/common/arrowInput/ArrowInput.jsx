@@ -7,18 +7,23 @@ import styles from './ArrowInput.pcss';
 export default class ArrowInput extends PureComponent {
     static propTypes = {
         label: PropTypes.string,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+        grey: PropTypes.bool
+    };
+
+    static defaultProps = {
+      grey: false
     };
 
     render() {
-        const { label, onClick } = this.props;
+        const { label, onClick, grey } = this.props;
 
         return (
             <I18n ns='translations'>
                 {
                     (t) => (
                         <div className={styles.wrapper} onClick={onClick}>
-                            <span className={styles.label}>{label}</span>
+                            <span className={grey ? styles.greyLabel : styles.label}>{label}</span>
                             <img src='/img/arrow_black.svg' className={styles.iconArrow} />
                         </div>
                     )
