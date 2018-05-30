@@ -9,7 +9,7 @@ export default function checkAuthorized() {
         return request({
             url: '/api/auth/check',
             method: 'GET'
-        }).then(response => {
+        }).then(() => {
             dispatch({ type: HIDE_LOADER, id: SET_AUTHORIZED });
 
             return dispatch({

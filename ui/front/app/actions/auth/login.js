@@ -13,13 +13,11 @@ export default function register(login, password) {
                 login,
                 password
             }
-        }).then(response => {
+        }).then(() => {
             return dispatch({type: HIDE_LOADER, id: SIGN_IN});
 
         }).catch(error => {
             dispatch({ type: HIDE_LOADER, id: SIGN_IN });
-
-
 
             throw error;
         });

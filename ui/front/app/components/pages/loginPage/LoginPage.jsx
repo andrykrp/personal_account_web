@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import { I18n, translate } from 'react-i18next';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import {I18n, translate} from 'react-i18next';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import NotificationSystem from 'react-notification-system';
 
 import LoginForm from '../../ui/forms/loginForm/LoginForm';
@@ -20,7 +20,7 @@ import verification from '../../../actions/register/verification';
 import verificationCheck from '../../../actions/register/verificationCheck';
 
 import styles from './LoginPage.pcss';
-import { isNotEmpty } from "../../../utils/lomda";
+import {isNotEmpty} from "../../../utils/lomda";
 
 class LoginPage extends PureComponent {
 
@@ -49,7 +49,16 @@ class LoginPage extends PureComponent {
             login: login
         });
         this.props.actions.login(login, password).then(() => {
-            this.props.actions.redirect('/');
+            this.props.actions.checkAuthorized().then(() => {
+                    this.props.actions.redirect('/')
+                }
+            ).catch((error) => {
+                if (error.response.data.type === 'LOGIN') {
+                    this.setState({
+                        stage: 2
+                    });
+                }
+            });
         }).catch((error) => {
             if (error.response.data.type === 'LOGIN') {
                 this.setState({
@@ -94,7 +103,7 @@ class LoginPage extends PureComponent {
     };
 
     render() {
-        const { showForgotPasswordModal, stage } = this.state;
+        const {showForgotPasswordModal, stage} = this.state;
 
         return (
             <I18n ns='translations'>
@@ -102,7 +111,7 @@ class LoginPage extends PureComponent {
                     (t) => (
                         <div className={styles.wrapper}>
                             <div className={styles.closeWrapper}>
-                                <img className={styles.logo} src='/img/close.svg' />
+                                <img className={styles.logo} src='/img/close.svg'/>
                             </div>
                             {
                                 stage === 1 && (
@@ -118,15 +127,15 @@ class LoginPage extends PureComponent {
                                             <div className={styles.socialBlockWrapperButton}>
                                                 <button className={styles.socialButton}>
                                                     <img className={styles.socialButtonIcon}
-                                                         src='/img/social/wechat.svg' />
+                                                         src='/img/social/wechat.svg'/>
                                                 </button>
                                                 <button className={styles.socialButton}>
                                                     <img className={styles.socialButtonIcon}
-                                                         src='/img/social/telegram.svg' />
+                                                         src='/img/social/telegram.svg'/>
                                                 </button>
                                                 <button className={styles.socialButton}>
                                                     <img className={styles.socialButtonIcon}
-                                                         src='/img/social/mail.svg' />
+                                                         src='/img/social/mail.svg'/>
                                                 </button>
                                             </div>
                                         </div>
@@ -152,7 +161,7 @@ class LoginPage extends PureComponent {
                                             <h1 className={styles.header}>{t('loginPage.security.header')}</h1>
                                             <p className={styles.info}>{t('loginPage.security.description')}</p>
                                             <p className={styles.warning}
-                                               dangerouslySetInnerHTML={{ __html: t('loginPage.security.warning') }} />
+                                               dangerouslySetInnerHTML={{__html: t('loginPage.security.warning')}}/>
                                             <p className={styles.info}>{t('loginPage.security.comment')}</p>
                                             <Button
                                                 onClick={this.handleClickVerificationButton}
@@ -176,13 +185,13 @@ class LoginPage extends PureComponent {
                                         />
                                     </div>)
                             }
-                            <NotificationSystem ref={this.handleSetRef('notification')} />
+                            <NotificationSystem ref={this.handleSetRef('notification')}/>
                             {
                                 showForgotPasswordModal && (
                                     <Modal>
                                         <div className={styles.modalWrapper}>
                                             <div className={styles.closeWrapper} onClick={this.handleCloseModal}>
-                                                <img className={styles.logo} src='/img/close.svg' />
+                                                <img className={styles.logo} src='/img/close.svg'/>
                                             </div>
                                             <h2 className={styles.title}>{t('loginPage.resetPasswordTitle')}</h2>
                                             <p className={styles.description}>{t('loginPage.resetPasswordDesc')}</p>
@@ -199,7 +208,7 @@ class LoginPage extends PureComponent {
 }
 
 function mapStateToProps(state, props) {
-    const { timer: { timer }, application: { user } } = state;
+    const {timer: {timer}, application: {user}} = state;
 
     return {
         timer,
