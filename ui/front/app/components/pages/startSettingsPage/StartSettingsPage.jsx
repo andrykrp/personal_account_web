@@ -163,6 +163,11 @@ class StartSettingsPage extends PureComponent {
                                         label={selectCurrencies.length > 0 ? stringCurrencies : t('startSettingsPage.settingThree.title')}
                                         onClick={this.handleOpenModalCurrency}/>
                                     <div className={styles.settingDesc}>{t('startSettingsPage.settingThree.desc')}</div>
+                                    <div className={styles.wrapperCurrency}>
+                                        <div className={styles.currency}>UBC</div>
+                                        <div className={styles.currency}>ETH</div>
+                                        <div className={styles.currency}>$</div>
+                                    </div>
                                 </div>
                                 <div className={styles.settingColumn}>
                                 <div className={styles.settingRow}>
