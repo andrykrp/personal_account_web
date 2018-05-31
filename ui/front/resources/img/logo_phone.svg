@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="10.4902cm" height="10.4902cm" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+viewBox="0 0 1049018 1049018"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+    <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="522894" y1="851889" x2="273746" y2="-159358">
+     <stop offset="0" stop-opacity="1" stop-color="#3ECFB9"/>
+     <stop offset="0.109804" stop-opacity="1" stop-color="#49D4C3"/>
+     <stop offset="0.639216" stop-opacity="1" stop-color="#3488D5"/>
+     <stop offset="1" stop-opacity="1" stop-color="#3386D6"/>
+    </linearGradient>
+ </defs>
+ <g id="Слой_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_810556768">
+   <path fill="url(#id0)" fill-opacity="0.101961" d="M523298 937599c-173703,0 -322438,-106906 -383998,-258508l-99069 39072c77141,191071 264359,325899 483067,325899 287600,0 520744,-233144 520744,-520743 0,-287600 -233144,-520744 -520744,-520744 -287599,0 -520743,233144 -520743,520744 0,6766 129,13505 385,20206l106654 -42226c11446,-218563 192290,-392261 413704,-392261 228801,0 414281,185480 414281,414281 0,228800 -185480,414280 -414281,414280z"/>
+   <path fill="#39ABC8" fill-opacity="0.101961" d="M33164 699642l464676 -183267 0 -146478 -493616 195436c3734,46786 13655,91830 28940,134309z"/>
+   <g>
+    <polygon fill="#2B2A29" fill-opacity="0.101961" points="410637,381314 410637,282969 286796,282969 286796,430347 "/>
+    <path fill="#2B2A29" fill-opacity="0.101961" d="M512858 706631c-69292,0 -102221,-37701 -102221,-126440l0 -9474 -122124 48353c11975,134631 86584,205472 222501,205472 153332,0 229127,-86972 229127,-251527l0 -290046 -123450 0 0 301791c0,85728 -35846,121871 -103833,121871z"/>
+   </g>
+  </g>
+ </g>
+</svg>

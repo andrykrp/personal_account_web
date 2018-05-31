@@ -30,7 +30,7 @@ class StartSettingsPage extends PureComponent {
         showModalCurrency: false,
         selectCurrencies: [],
         checkSms: false,
-        showModalGeoLocation: false,
+        showModalGeoLocation: true,
         searchString: '',
         searchResultGeoLocation: [],
         selectGeoLocation: {}
@@ -234,6 +234,13 @@ class StartSettingsPage extends PureComponent {
                                             </div>
                                         );
                                     }, searchResultGeoLocation)
+                                }
+                                {
+                                    searchResultGeoLocation.length === 0 && searchString.length === 0 && (
+                                        <div className={styles.wrapperSearchContentEmpty}>
+                                            {t('settings.descriptionSearchLocation')}
+                                        </div>
+                                    )
                                 }
                             </div>
                         </Modal>
