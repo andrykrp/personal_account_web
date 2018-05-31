@@ -40,7 +40,7 @@ class SuccessRegisterPage extends PureComponent {
 
             <div className={styles.wrapper}>
                 <div className={styles.closeWrapper}>
-                    <img className={styles.closeIcon} src='/img/close.svg' />
+                    <img className={styles.closeIcon} src='/img/close.svg' onClick={this.handleRedirectToHome}/>
                 </div>
                 <h2 className={styles.header}>{t('successRegistrationPage.header')}</h2>
                 <div className={styles.info}>
