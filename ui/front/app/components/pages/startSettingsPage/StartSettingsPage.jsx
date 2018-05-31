@@ -1,9 +1,9 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {I18n} from 'react-i18next';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {contains, append, without, pipe, filter, map, join, isEmpty, equals} from 'ramda';
+import { I18n } from 'react-i18next';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { contains, append, without, pipe, filter, map, join, isEmpty, equals } from 'ramda';
 
 import Switch from '../../ui/common/switch/Switch';
 import Checkbox from '../../ui/common/checkbox/Checkbox';
@@ -16,11 +16,13 @@ import ListWithCheckbox from '../../ui/common/listWithCheckbox/ListWithCheckbox'
 import redirect from '../../../actions/redirect';
 import getListCurrencies from '../../../actions/getListCurrencies';
 import findGeoLocation from '../../../actions/findGeoLocation';
+import Translate from '../../decorators/Translate';
 
-import {mapIndex, isNotEmpty} from '../../../utils/lomda';
+import { mapIndex, isNotEmpty } from '../../../utils/lomda';
 
 import styles from './StartSettingsPage.pcss';
 
+@Translate()
 class StartSettingsPage extends PureComponent {
     state = {
         geoLocationOn: false,
@@ -39,7 +41,7 @@ class StartSettingsPage extends PureComponent {
     };
 
     componentDidMount() {
-        const {listCurrencies, actions} = this.props;
+        const { listCurrencies, actions } = this.props;
 
         if (isEmpty(listCurrencies)) {
             actions.getListCurrencies();
@@ -88,7 +90,7 @@ class StartSettingsPage extends PureComponent {
     };
 
     handleClickRowCurrency = (id) => {
-        const {selectCurrencies} = this.state;
+        const { selectCurrencies } = this.state;
 
         this.setState({
             selectCurrencies: contains(id, selectCurrencies)
@@ -133,122 +135,117 @@ class StartSettingsPage extends PureComponent {
 
     render() {
         const
-            {listCurrencies} = this.props,
-            {geoLocationOn, twoFactorAuth, showModalCurrency, selectCurrencies, checkSms, showModalGeoLocation, searchString, searchResultGeoLocation, selectGeoLocation} = this.state;
+            { listCurrencies, translate: t } = this.props,
+            { geoLocationOn, twoFactorAuth, showModalCurrency, selectCurrencies, checkSms, showModalGeoLocation, searchString, searchResultGeoLocation, selectGeoLocation } = this.state;
 
         let stringCurrencies = pipe(
-            filter(({id}) => contains(id, selectCurrencies)),
-            map(({description, character}) => `${description} (${character})`),
+            filter(({ id }) => contains(id, selectCurrencies)),
+            map(({ description, character }) => `${description} (${character})`),
             join(', ')
         )(listCurrencies);
 
         return (
-            <I18n ns='translations'>
-                {
-                    (t) => (
-                        <div className={styles.wrapper}>
-                            <Header buttonClick={this.handleRedirectToBack} title={t('startSettingsPage.title')}/>
 
-                            <div className={styles.content}>
+            <div className={styles.wrapper}>
+                <Header buttonClick={this.handleRedirectToBack} title={t('startSettingsPage.title')} />
 
-                                <div className={styles.settingColumn}>
-                                    {
-                                        selectCurrencies.length > 0 && (
-                                            <span className={styles.label}>
+                <div className={styles.content}>
+
+                    <div className={styles.settingColumn}>
+                        {
+                            selectCurrencies.length > 0 && (
+                                <span className={styles.label}>
                                                 {t('startSettingsPage.settingThree.title')}
                                             </span>
-                                        )
-                                    }
-                                    <ArrowInput
-                                        label={selectCurrencies.length > 0 ? stringCurrencies : t('startSettingsPage.settingThree.title')}
-                                        onClick={this.handleOpenModalCurrency}/>
-                                    <div className={styles.settingDesc}>{t('startSettingsPage.settingThree.desc')}</div>
-                                    <div className={styles.wrapperCurrency}>
-                                        <div className={styles.currency}>UBC</div>
-                                        <div className={styles.currency}>ETH</div>
-                                        <div className={styles.currency}>$</div>
-                                    </div>
-                                </div>
-                                <div className={styles.settingColumn}>
-                                <div className={styles.settingRow}>
-                                    <div className={styles.settingContent}>
-                                        <div
-                                            className={styles.settingTitle}>{t('startSettingsPage.settingOne.title')}</div>
-                                        <div
-                                            className={styles.settingDesc}>{t('startSettingsPage.settingOne.desc')}</div>
-                                    </div>
-                                    <Switch value={geoLocationOn} onClick={this.handleClickSwitchGeoLocation}/>
-                                </div>
-                                <ArrowInput
-                                    label={isNotEmpty(selectGeoLocation) ? selectGeoLocation.text : t('startSettingsPage.settingOne.locationUndefined')}
-                                    onClick={this.handleClickGeoLocation}
-                                    grey={!isNotEmpty(selectGeoLocation)}
-                                />
-
-                                </div>
-
-                                <div className={styles.settingRow}>
-                                    <div className={styles.settingContent}>
-                                        <div
-                                            className={styles.settingTitle}>{t('startSettingsPage.settingTwo.title')}</div>
-                                        <div
-                                            className={styles.settingDesc}>{t('startSettingsPage.settingTwo.desc')}</div>
-
-                                    </div>
-                                    <Switch value={twoFactorAuth} onClick={this.handleClickSwitchTwoFactorAuth}/>
-                                </div>
-                                {
-                                    twoFactorAuth && (
-                                        <Checkbox label={t('startSettingsPage.settingTwo.withSMS')} value={checkSms}
-                                                  onClick={this.handleClickCheckbox}/>)
-                                }
-                            </div>
-                            {
-                                showModalCurrency && (
-                                    <Modal>
-                                        <Header title='Выберите валюты' buttonClick={this.handleCloseModalCurrency}/>
-                                        <ListWithCheckbox
-                                            title='Список валют'
-                                            list={listCurrencies}
-                                            maxSelect={3}
-                                            selectArray={selectCurrencies}
-                                            onClickRow={this.handleClickRowCurrency}
-                                        />
-                                    </Modal>
-                                )
-                            }
-                            {
-                                showModalGeoLocation && (
-                                    <Modal>
-                                        <HeaderWithSearch searchValue={searchString}
-                                                          onChangeSearchValue={this.handleChangeSearch}
-                                                          buttonClick={this.handleCloseGeoLocationModal}/>
-                                        <div className={styles.wrapperModal}>
-                                            {
-                                                searchResultGeoLocation.length > 0 && mapIndex((item, index) => {
-                                                    return (
-                                                        <div key={index}
-                                                             className={equals(selectGeoLocation, item) ? styles.selectedRow : styles.resultRow}
-                                                             onClick={() => this.handleSelectGeoLocation(item)}>
-                                                            {item.text}
-                                                        </div>
-                                                    );
-                                                }, searchResultGeoLocation)
-                                            }
-                                        </div>
-                                    </Modal>
-                                )
-                            }
+                            )
+                        }
+                        <ArrowInput
+                            label={selectCurrencies.length > 0 ? stringCurrencies : t('startSettingsPage.settingThree.title')}
+                            onClick={this.handleOpenModalCurrency} />
+                        <div className={styles.settingDesc}>{t('startSettingsPage.settingThree.desc')}</div>
+                        <div className={styles.wrapperCurrency}>
+                            <div className={styles.currency}>UBC</div>
+                            <div className={styles.currency}>ETH</div>
+                            <div className={styles.currency}>$</div>
                         </div>
+                    </div>
+                    <div className={styles.settingColumn}>
+                        <div className={styles.settingRow}>
+                            <div className={styles.settingContent}>
+                                <div
+                                    className={styles.settingTitle}>{t('startSettingsPage.settingOne.title')}</div>
+                                <div
+                                    className={styles.settingDesc}>{t('startSettingsPage.settingOne.desc')}</div>
+                            </div>
+                            <Switch value={geoLocationOn} onClick={this.handleClickSwitchGeoLocation} />
+                        </div>
+                        <ArrowInput
+                            label={isNotEmpty(selectGeoLocation) ? selectGeoLocation.text : t('startSettingsPage.settingOne.locationUndefined')}
+                            onClick={this.handleClickGeoLocation}
+                            grey={!isNotEmpty(selectGeoLocation)}
+                        />
+
+                    </div>
+
+                    <div className={styles.settingRow}>
+                        <div className={styles.settingContent}>
+                            <div
+                                className={styles.settingTitle}>{t('startSettingsPage.settingTwo.title')}</div>
+                            <div
+                                className={styles.settingDesc}>{t('startSettingsPage.settingTwo.desc')}</div>
+
+                        </div>
+                        <Switch value={twoFactorAuth} onClick={this.handleClickSwitchTwoFactorAuth} />
+                    </div>
+                    {
+                        twoFactorAuth && (
+                            <Checkbox label={t('startSettingsPage.settingTwo.withSMS')} value={checkSms}
+                                      onClick={this.handleClickCheckbox} />)
+                    }
+                </div>
+                {
+                    showModalCurrency && (
+                        <Modal>
+                            <Header title='Выберите валюты' buttonClick={this.handleCloseModalCurrency} />
+                            <ListWithCheckbox
+                                title='Список валют'
+                                list={listCurrencies}
+                                maxSelect={3}
+                                selectArray={selectCurrencies}
+                                onClickRow={this.handleClickRowCurrency}
+                            />
+                        </Modal>
                     )
                 }
-            </I18n>
+                {
+                    showModalGeoLocation && (
+                        <Modal>
+                            <HeaderWithSearch searchValue={searchString}
+                                              onChangeSearchValue={this.handleChangeSearch}
+                                              buttonClick={this.handleCloseGeoLocationModal} />
+                            <div className={styles.wrapperModal}>
+                                {
+                                    searchResultGeoLocation.length > 0 && mapIndex((item, index) => {
+                                        return (
+                                            <div key={index}
+                                                 className={equals(selectGeoLocation, item) ? styles.selectedRow : styles.resultRow}
+                                                 onClick={() => this.handleSelectGeoLocation(item)}>
+                                                {item.text}
+                                            </div>
+                                        );
+                                    }, searchResultGeoLocation)
+                                }
+                            </div>
+                        </Modal>
+                    )
+                }
+            </div>
         );
     }
 }
 
 function mapStateToProps(state, props) {
-    const {currencies: {listCurrencies}} = state;
+    const { currencies: { listCurrencies } } = state;
 
     return {
         listCurrencies

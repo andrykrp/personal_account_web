@@ -1,11 +1,11 @@
 {
   "env": {
     "dev": {
-      "plugins": ["transform-runtime"],
+      "plugins": ["transform-runtime", "transform-decorators-legacy"],
       "presets": ["react", "react-hmre", "es2015", "stage-1"]
     },
     "production": {
-      "plugins": ["transform-runtime"],
+      "plugins": ["transform-runtime", "transform-decorators-legacy"],
       "presets": ["react", "es2015", "stage-1"]
     }
   }

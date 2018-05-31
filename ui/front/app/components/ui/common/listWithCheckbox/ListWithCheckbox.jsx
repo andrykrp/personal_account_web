@@ -5,8 +5,11 @@ import { map, contains } from 'ramda';
 
 import Switch from '../switch/Switch';
 
+import Translate from '../../../decorators/Translate';
+
 import styles from './ListWithCheckbox.pcss';
 
+@Translate()
 export default class ListWithCheckbox extends PureComponent {
     static propTypes = {
         list: PropTypes.array,
@@ -38,32 +41,27 @@ export default class ListWithCheckbox extends PureComponent {
     );
 
     render() {
-        const { list, maxSelect, title, selectArray } = this.props;
+        const { list, maxSelect, title, selectArray, translate: t } = this.props;
 
         return (
-            <I18n ns='translations'>
-                {
-                    (t) => (
-                        <div className={styles.wrapper}>
-                            <div className={styles.headerRow}>
-                                <span>
-                                    {title}
-                                </span>
-                                <span>
-                                    Выбрано {selectArray.length} из {maxSelect}
-                                </span>
-                            </div>
-                            <div>
-                                {
-                                    map((item) => {
-                                        return this.renderRowList(item);
-                                    }, list)
-                                }
-                            </div>
-                        </div>
-                    )
-                }
-            </I18n>
+
+            <div className={styles.wrapper}>
+                <div className={styles.headerRow}>
+                    <span>
+                        {title}
+                        </span>
+                    <span>
+                     Выбрано {selectArray.length} из {maxSelect}
+                     </span>
+                </div>
+                <div>
+                    {
+                        map((item) => {
+                            return this.renderRowList(item);
+                        }, list)
+                    }
+                </div>
+            </div>
         );
     }
 }

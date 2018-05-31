@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { I18n } from 'react-i18next';
 import classNames from 'classnames/bind';
+
+import Translate from '../../../decorators/Translate';
 
 import styles from './HeaderWithSearch.pcss';
 
 const styleContext = classNames.bind(styles);
 
+@Translate()
 export default class HeaderWithSearch extends PureComponent {
     static propTypes = {
         buttonClick: PropTypes.func,
@@ -19,7 +21,7 @@ export default class HeaderWithSearch extends PureComponent {
     };
 
     render() {
-        const { buttonClick, searchValue } = this.props;
+        const { buttonClick, searchValue, translate: t } = this.props;
 
         const buttonClasses = styleContext({
             button: true,
@@ -32,23 +34,18 @@ export default class HeaderWithSearch extends PureComponent {
         });
 
         return (
-            <I18n ns='translations'>
-                {
-                    (t) => (
-                        <div className={styles.wrapper}>
-                            <button
-                                onClick={buttonClick}
-                                className={buttonClasses}
-                            />
-                            <input className={styles.searchInput} type='text' value={searchValue}
-                                   onChange={this.handleChangeInput}
-                                   placeholder={t('headerWithSearch.placeholder')}
-                            />
-                            <div className={logoClasses} />
-                        </div>
-                    )
-                }
-            </I18n>
+
+            <div className={styles.wrapper}>
+                <button
+                    onClick={buttonClick}
+                    className={buttonClasses}
+                />
+                <input className={styles.searchInput} type='text' value={searchValue}
+                       onChange={this.handleChangeInput}
+                       placeholder={t('headerWithSearch.placeholder')}
+                />
+                <div className={logoClasses} />
+            </div>
         );
     }
 }

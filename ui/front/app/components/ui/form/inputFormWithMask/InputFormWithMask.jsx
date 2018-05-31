@@ -45,7 +45,7 @@ class InputFormWithMask extends PureComponent {
                     guide={false}
                 />
             </div>
-        )
+        );
     }
 }
 

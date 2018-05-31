@@ -17,8 +17,11 @@ import showNotification from '../../../actions/notification/show';
 import setTimer from '../../../actions/timer';
 import login from '../../../actions/auth/login';
 
+import Translate from '../../decorators/Translate';
+
 import styles from './RegistrationPage.pcss';
 
+@Translate()
 class RegistrationPage extends PureComponent {
 
     state = {
@@ -121,72 +124,67 @@ class RegistrationPage extends PureComponent {
 
     render() {
         const
-            { phone } = this.props,
+            { phone, translate: t } = this.props,
             { step, showMoreInfoModal } = this.state;
 
         return (
-            <I18n ns='translations'>
+
+            <div className={styles.wrapper}>
+                <div className={styles.closeWrapper} onClick={this.handleClose}>
+                    <img className={styles.logo} src='/img/close.svg' />
+                </div>
+                <h2 className={styles.header}>{t('registerPage.header')}</h2>
                 {
-                    (t) => (
-                        <div className={styles.wrapper}>
-                            <div className={styles.closeWrapper} onClick={this.handleClose}>
-                                <img className={styles.logo} src='/img/close.svg' />
+                    step === 1 && (
+                        <div>
+                            <RegisterForm
+                                onSubmit={this.handleSubmitRegisterForm}
+                            />
+                            <div className={styles.wrapperLabel}>
+                                <p className={styles.label}>{t('registerPage.step_1.comment')}</p>
                             </div>
-                            <h2 className={styles.header}>{t('registerPage.header')}</h2>
-                            {
-                                step === 1 && (
-                                    <div>
-                                        <RegisterForm
-                                            onSubmit={this.handleSubmitRegisterForm}
-                                        />
-                                        <div className={styles.wrapperLabel}>
-                                            <p className={styles.label}>{t('registerPage.step_1.comment')}</p>
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            {
-                                step === 2 && (
-                                    <div>
-                                        <h2 className={styles.title}>{t('registerPage.step_2.title')}</h2>
-                                        <p className={styles.label}>{t('registerPage.step_2.comment')} {phone}</p>
-                                        <VerificationForm
-                                            onSubmit={this.handleSubmitVerificationForm}
-                                            timer={this.props.timer}
-                                            onClickSendRetry={this.handleSendRetry}
-                                        />
-                                    </div>
-                                )
-                            }
-                            {
-                                step === 3 && (
-                                    <div>
-                                        <p className={styles.label}>{t('registerPage.step_3.comment')}</p>
-                                        <a onClick={this.handleClickMoreInfo}
-                                           className={styles.linkInfo}>{t('registerPage.step_3.moreInfo')}</a>
-                                        <PasswordForm
-                                            onSubmit={this.handleSubmitPasswordForm}
-                                        />
-                                    </div>
-                                )
-                            }
-                            {
-                                showMoreInfoModal && (
-                                    <Modal>
-                                        <div>
-                                            <div className={styles.closeWrapper} onClick={this.handleCloseModal}>
-                                                <img className={styles.logo} src='/img/close.svg' />
-                                            </div>
-                                            <h2 className={styles.title}>{t('registerPage.step_3.titleMoreInfo')}</h2>
-                                            <p className={styles.label}>{t('registerPage.step_3.requirements')}</p>
-                                        </div>
-                                    </Modal>
-                                )
-                            }
                         </div>
                     )
                 }
-            </I18n>
+                {
+                    step === 2 && (
+                        <div>
+                            <h2 className={styles.title}>{t('registerPage.step_2.title')}</h2>
+                            <p className={styles.label}>{t('registerPage.step_2.comment')} {phone}</p>
+                            <VerificationForm
+                                onSubmit={this.handleSubmitVerificationForm}
+                                timer={this.props.timer}
+                                onClickSendRetry={this.handleSendRetry}
+                            />
+                        </div>
+                    )
+                }
+                {
+                    step === 3 && (
+                        <div>
+                            <p className={styles.label}>{t('registerPage.step_3.comment')}</p>
+                            <a onClick={this.handleClickMoreInfo}
+                               className={styles.linkInfo}>{t('registerPage.step_3.moreInfo')}</a>
+                            <PasswordForm
+                                onSubmit={this.handleSubmitPasswordForm}
+                            />
+                        </div>
+                    )
+                }
+                {
+                    showMoreInfoModal && (
+                        <Modal>
+                            <div>
+                                <div className={styles.closeWrapper} onClick={this.handleCloseModal}>
+                                    <img className={styles.logo} src='/img/close.svg' />
+                                </div>
+                                <h2 className={styles.title}>{t('registerPage.step_3.titleMoreInfo')}</h2>
+                                <p className={styles.label}>{t('registerPage.step_3.requirements')}</p>
+                            </div>
+                        </Modal>
+                    )
+                }
+            </div>
         );
     }
 }

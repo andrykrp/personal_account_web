@@ -1,14 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { I18n, translate } from 'react-i18next';
 
 import InputForm from '../../form/inputForm/InputForm';
 import PasswordStrengthMeter from '../../common/passwordStrengthMeter/PasswordStrengthMeter';
+
+import Translate from '../../../decorators/Translate';
 
 import styles from './PasswordForm.pcss';
 
 const minLength = 6;
 
+@Translate()
 class PasswordForm extends PureComponent {
     static propTypes = {
         onSubmit: PropTypes.func
@@ -23,7 +25,7 @@ class PasswordForm extends PureComponent {
     handleFieldChange = name => event => {
         this.setState({
             [name]: event.target.value
-        })
+        });
     };
 
     handleSubmit = (event) => {
@@ -34,7 +36,9 @@ class PasswordForm extends PureComponent {
     };
 
     render() {
-        const { password, retryPassword } = this.state;
+        const
+            { translate: t } = this.props,
+            { password, retryPassword } = this.state;
         let
             strong = 0;
 
@@ -51,46 +55,41 @@ class PasswordForm extends PureComponent {
         const checkPassword = !(password === retryPassword && strong === 3);
 
         return (
-            <I18n ns="translations">
-                {
-                    (t) => (
-                        <form onSubmit={this.handleSubmit} className={styles.wrapper}>
-                            <InputForm
-                                value={password}
-                                onChange={this.handleFieldChange('password')}
-                                placeholder={t('passwordForm.password')}
-                                name='password'
-                                type='password'
-                            />
-                            <PasswordStrengthMeter
-                                strong={strong}
-                            />
 
-                            <InputForm
-                                value={retryPassword}
-                                onChange={this.handleFieldChange('retryPassword')}
-                                placeholder={t('passwordForm.retryPassword')}
-                                name='retryPassword'
-                                type='password'
-                            />
+            <form onSubmit={this.handleSubmit} className={styles.wrapper}>
+                <InputForm
+                    value={password}
+                    onChange={this.handleFieldChange('password')}
+                    placeholder={t('passwordForm.password')}
+                    name='password'
+                    type='password'
+                />
+                <PasswordStrengthMeter
+                    strong={strong}
+                />
 
-                                    <div className={styles.errorMessage}>
-                                        { password !== retryPassword ? t('passwordForm.errorRetry') : ''}
-                                    </div>
+                <InputForm
+                    value={retryPassword}
+                    onChange={this.handleFieldChange('retryPassword')}
+                    placeholder={t('passwordForm.retryPassword')}
+                    name='retryPassword'
+                    type='password'
+                />
 
-                            <button
-                                type='submit'
-                                onClick={this.handleSubmit}
-                                className={styles.button}
-                                disabled={!((password === retryPassword) && strong >= 3)}
-                            >
-                                {t('passwordForm.submitButton')}
-                            </button>
-                        </form>
-                    )
-                }
-            </I18n>
-        )
+                <div className={styles.errorMessage}>
+                    {password !== retryPassword ? t('passwordForm.errorRetry') : ''}
+                </div>
+
+                <button
+                    type='submit'
+                    onClick={this.handleSubmit}
+                    className={styles.button}
+                    disabled={!((password === retryPassword) && strong >= 3)}
+                >
+                    {t('passwordForm.submitButton')}
+                </button>
+            </form>
+        );
     }
 }
 

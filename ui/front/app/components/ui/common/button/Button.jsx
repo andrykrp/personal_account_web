@@ -4,8 +4,6 @@ import classNames from 'classnames/bind';
 
 import styles from './Button.pcss';
 
-const styleContext = classNames.bind(styles);
-
 class Button extends PureComponent {
     static propTypes = {
         onClick: PropTypes.func,
@@ -30,8 +28,7 @@ class Button extends PureComponent {
             >
                 {label}
             </button>
-
-        )
+        );
     }
 }
 

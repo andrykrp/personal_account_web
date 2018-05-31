@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { I18n, translate } from 'react-i18next';
 
 import Button from '../../common/button/Button';
 import InputForm from '../../form/inputForm/InputForm';
@@ -53,44 +52,40 @@ class VerificationForm extends PureComponent {
 
     render() {
         const
-            { timer } = this.props,
+            { timer, translate: t } = this.props,
             { verificationCode, showRetrySendCode } = this.state;
 
         return (
-            <I18n ns='translations'>
+
+            <form onSubmit={this.handleSubmit} className={styles.wrapper}>
+                <InputForm
+                    value={verificationCode}
+                    onChange={this.handleFieldChange('verificationCode')}
+                    placeholder={t('verificationForm.verificationCode')}
+                    name='verificationCode'
+                    maxLength={6}
+                    minLength={6}
+                />
                 {
-                    (t) => (
-                        <form onSubmit={this.handleSubmit} className={styles.wrapper}>
-                            <InputForm
-                                value={verificationCode}
-                                onChange={this.handleFieldChange('verificationCode')}
-                                placeholder={t('verificationForm.verificationCode')}
-                                name='verificationCode'
-                                maxLength={6}
-                                minLength={6}
+                    showRetrySendCode && (
+                        <a className={styles.resendLabel}
+                           onClick={this.handleSentRetry}>{t('verificationForm.resend')}</a>
+                    ) || (
+                        <p className={styles.label}>
+                            {t('verificationForm.retrySend')}
+                            <Countdown
+                                target={timer}
+                                onExpired={this.timerExpired}
                             />
-                            {
-                                showRetrySendCode && (
-                                    <a className={styles.resendLabel} onClick={this.handleSentRetry}>{t('verificationForm.resend')}</a>
-                                ) || (
-                                    <p className={styles.label}>
-                                        {t('verificationForm.retrySend')}
-                                        <Countdown
-                                            target={timer}
-                                            onExpired={this.timerExpired}
-                                        />
-                                    </p>
-                                )
-                            }
-                            <Button
-                                disabled={this.state.disableButton}
-                                label={t('verificationForm.buttonContinue')}
-                                onClick={this.handleSubmit}
-                            />
-                        </form>
+                        </p>
                     )
                 }
-            </I18n>
+                <Button
+                    disabled={this.state.disableButton}
+                    label={t('verificationForm.buttonContinue')}
+                    onClick={this.handleSubmit}
+                />
+            </form>
         );
     }
 }

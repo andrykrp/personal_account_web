@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { I18n, translate } from 'react-i18next';
 
 import InputFormWithMask from '../../form/inputFormWithMask/InputFormWithMask';
 import Button from '../../common/button/Button';
@@ -33,32 +32,29 @@ class RegisterForm extends PureComponent {
     };
 
     render() {
-        const { phone, disableButton } = this.state;
+        const
+            { translate: t } = this.props,
+            { phone, disableButton } = this.state;
 
         return (
-            <I18n ns='translations'>
-                {
-                    (t) => (
-                        <form onSubmit={this.handleSubmit} className={styles.wrapper}>
-                            <div>
-                                <p className={styles.label}>{t('registerForm.enterPhone')}</p>
-                            </div>
-                            <InputFormWithMask
-                                mask={['(', '+', /[1-9]/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
-                                placeholder={t('registerForm.phone')}
-                                value={phone}
-                                onChange={this.handleFieldChange('phone')}
-                                keepCharPositions={false}
-                            />
-                            <Button
-                                disabled={disableButton}
-                                label={t('registerForm.buttonContinue')}
-                                onClick={this.handleSubmit}
-                            />
-                        </form>
-                    )
-                }
-            </I18n>
+
+            <form onSubmit={this.handleSubmit} className={styles.wrapper}>
+                <div>
+                    <p className={styles.label}>{t('registerForm.enterPhone')}</p>
+                </div>
+                <InputFormWithMask
+                    mask={['(', '+', /[1-9]/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+                    placeholder={t('registerForm.phone')}
+                    value={phone}
+                    onChange={this.handleFieldChange('phone')}
+                    keepCharPositions={false}
+                />
+                <Button
+                    disabled={disableButton}
+                    label={t('registerForm.buttonContinue')}
+                    onClick={this.handleSubmit}
+                />
+            </form>
         );
     }
 }

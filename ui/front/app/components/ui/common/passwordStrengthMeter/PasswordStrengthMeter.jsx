@@ -35,7 +35,7 @@ class PasswordStrengthMeter extends PureComponent {
                 <div className={strong >= 9 ? stylesLine : styles.line} />
                 <div className={strong >= 9 ? stylesLine : styles.line} />
             </div>
-        )
+        );
     }
 
 }
