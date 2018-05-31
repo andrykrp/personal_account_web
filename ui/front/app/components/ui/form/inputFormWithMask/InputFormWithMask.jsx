@@ -14,7 +14,8 @@ class InputFormWithMask extends PureComponent {
         placeholder: PropTypes.string,
         name: PropTypes.string,
         type: PropTypes.string,
-        mask: PropTypes.array
+        mask: PropTypes.array,
+        autocomplete: PropTypes.string
     };
 
     static defaultProps  = {
@@ -23,7 +24,7 @@ class InputFormWithMask extends PureComponent {
 
     render() {
         const
-            { onChange, placeholder, value, mask } = this.props;
+            { onChange, placeholder, value, mask, name } = this.props;
 
         const labelClasses = styleContext({
             label: true,
@@ -43,6 +44,7 @@ class InputFormWithMask extends PureComponent {
                     onChange={onChange}
                     keepCharPositions={false}
                     guide={false}
+                    name={name}
                 />
             </div>
         );

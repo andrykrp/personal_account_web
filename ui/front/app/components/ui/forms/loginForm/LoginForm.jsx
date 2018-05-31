@@ -51,6 +51,7 @@ class LoginForm extends PureComponent {
                     value={login}
                     onChange={this.handleFieldChange('login')}
                     keepCharPositions={false}
+                    name='login'
                 />
                 <InputForm
                     type='password'

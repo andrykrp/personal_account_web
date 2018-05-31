@@ -18,7 +18,8 @@ class InputForm extends PureComponent {
     };
 
     static defaultProps = {
-        type: 'string'
+        type: 'string',
+        autocomplete: 'off'
     };
 
     render() {
