@@ -5,8 +5,11 @@ import Button from '../../common/button/Button';
 import InputForm from '../../form/inputForm/InputForm';
 import Countdown from '../../common/Countdown/Countdown';
 
+import Translate from '../../../decorators/Translate';
+
 import styles from './VerificationForm.pcss';
 
+@Translate()
 class VerificationForm extends PureComponent {
     static propTypes = {
         onSubmit: PropTypes.func,

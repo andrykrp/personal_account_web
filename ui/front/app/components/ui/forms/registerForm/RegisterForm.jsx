@@ -4,8 +4,11 @@ import PropTypes from 'prop-types';
 import InputFormWithMask from '../../form/inputFormWithMask/InputFormWithMask';
 import Button from '../../common/button/Button';
 
+import Translate from '../../../decorators/Translate';
+
 import styles from './RegisterForm.pcss';
 
+@Translate()
 class RegisterForm extends PureComponent {
     static propTypes = {
         onSubmit: PropTypes.func
