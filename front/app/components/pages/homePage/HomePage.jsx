@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import LoginPage from '../../pages/loginPage/LoginPage';
+import LoginPage from '../loginPage/LoginPage';
 
 import redirect from '../../../actions/redirect';
 import logout from '../../../actions/auth/logout';

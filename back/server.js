@@ -7,7 +7,7 @@ const
 
 const
     ENVIRONMENTS = require('./constants/environments'),
-    initRoutes = require('./routes');
+    initRoutes = require('./routes/index');
 
 const
     app = express(),
