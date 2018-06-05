@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import LoginPage from '../loginPage/LoginPage';
+
+import LoginPage from '../../pages/loginPage/LoginPage';
+import Menu from '../../ui/common/menu/Menu';
 
 import redirect from '../../../actions/redirect';
 import logout from '../../../actions/auth/logout';
@@ -18,6 +20,10 @@ class HomePage extends PureComponent {
     static propTypes = {
         user: PropTypes.object,
         authorized: PropTypes.bool
+    };
+
+    state = {
+        showMenu: false
     };
 
     static componentDidMount() {
@@ -39,14 +45,21 @@ class HomePage extends PureComponent {
         this.props.actions.redirect('/login');
     };
 
+    handleShowMenu = () => {
+        this.setState({
+            showMenu: true
+        });
+    };
+
     render() {
-        const { authorized, user, translate: t } = this.props;
+        const
+            { authorized, user, translate: t } = this.props,
+            { showMenu } = this.state;
 
         return (
 
             authorized && (
                 <div className={styles.wrapper}>
-
                     <div className={styles.wrapperHexagon}>
                         <img className={styles.hex} src='/img/hex.svg' alt='' />
                     </div>
@@ -66,6 +79,11 @@ class HomePage extends PureComponent {
                     <div className={styles.imgWrapper}>
                         <img className={styles.img} src='/img/in_developing.svg' alt='' />
                     </div>
+                    {
+                        showMenu && (
+                            <Menu/>
+                        )
+                    }
                 </div>
             ) || (
                 <LoginPage />

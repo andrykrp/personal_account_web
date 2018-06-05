@@ -5,7 +5,7 @@ export default function getUser() {
     return dispatch => {
 
         return request({
-            url: '/api/user/me',
+            url: '/api/users/me',
             method: 'GET'
         }).then(response => {
 

@@ -17,7 +17,7 @@ class LoginForm extends PureComponent {
     };
 
     state = {
-        login: '',
+        phone: '',
         password: '',
         disableButton: true
     };
@@ -25,13 +25,13 @@ class LoginForm extends PureComponent {
     handleFieldChange = name => event => {
         this.setState({
             [name]: event.target.value,
-            disableButton: this.state.password === '' || this.state.login === ''
+            disableButton: this.state.password === '' || this.state.phone === ''
         });
     };
 
     handleSubmit = (event) => {
-        const { login, password } = this.state;
-        const sendingLogin = login.replace('+', '').replace('(', '').replace(')', '').replace('_', '');
+        const { phone, password } = this.state;
+        const sendingLogin = phone.replace('+', '').replace('(', '').replace(')', '').replace('_', '');
 
         event.preventDefault();
         this.props.onSubmit(sendingLogin, password);
@@ -40,7 +40,10 @@ class LoginForm extends PureComponent {
     render() {
         const
             { translate: t} = this.props,
-            { login, password } = this.state;
+            { phone, password } = this.state;
+
+        const disableButton = phone === '' || password === '';
+
 
         return (
             <form onSubmit={this.handleSubmit} className={styles.wrapper}>
@@ -48,10 +51,10 @@ class LoginForm extends PureComponent {
                 <InputFormWithMask
                     mask={['(', '+', /[1-9]/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
                     placeholder={t('loginPage.loginForm.phone')}
-                    value={login}
-                    onChange={this.handleFieldChange('login')}
+                    value={phone}
+                    onChange={this.handleFieldChange('phone')}
                     keepCharPositions={false}
-                    name='login'
+                    name='phone'
                 />
                 <InputForm
                     type='password'
@@ -65,7 +68,7 @@ class LoginForm extends PureComponent {
                     {t('loginPage.loginForm.forgotPass')}
                 </label>
                 <Button
-                    disabled={this.state.disableButton}
+                    disabled={disableButton}
                     label={t('loginPage.loginForm.buttonLogin')}
                     onClick={this.handleSubmit}
                 />

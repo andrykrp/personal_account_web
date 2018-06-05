@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from '../../common/button/Button';
 import InputForm from '../../form/inputForm/InputForm';
+import InputFormWithMask from '../../form/inputFormWithMask/InputFormWithMask';
 import Countdown from '../../common/Countdown/Countdown';
 
 import Translate from '../../../decorators/Translate';
@@ -61,13 +62,14 @@ class VerificationForm extends PureComponent {
         return (
 
             <form onSubmit={this.handleSubmit} className={styles.wrapper}>
-                <InputForm
+                <InputFormWithMask
                     value={verificationCode}
                     onChange={this.handleFieldChange('verificationCode')}
                     placeholder={t('verificationForm.verificationCode')}
                     name='verificationCode'
                     maxLength={6}
                     minLength={6}
+                    mask={[ /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
                 />
                 {
                     showRetrySendCode && (

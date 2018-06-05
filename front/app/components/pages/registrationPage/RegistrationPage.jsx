@@ -17,6 +17,8 @@ import showNotification from '../../../actions/notification/show';
 import setTimer from '../../../actions/timer';
 import login from '../../../actions/auth/login';
 
+import {formatPhone} from '../../../utils/format';
+
 import Translate from '../../decorators/Translate';
 
 import styles from './RegistrationPage.pcss';
@@ -110,12 +112,14 @@ class RegistrationPage extends PureComponent {
         this.setState({
             showMoreInfoModal: true
         });
+        document.body.style.overflowY = 'hidden';
     };
 
     handleCloseModal = () => {
         this.setState({
             showMoreInfoModal: false
         });
+        document.body.style.overflowY = 'auto';
     };
 
     handleSendRetry = () => {
@@ -150,7 +154,7 @@ class RegistrationPage extends PureComponent {
                     step === 2 && (
                         <div>
                             <h2 className={styles.title}>{t('registerPage.step_2.title')}</h2>
-                            <p className={styles.label}>{t('registerPage.step_2.comment')} {phone}</p>
+                            <p className={styles.label}>{t('registerPage.step_2.comment')} {formatPhone(phone)}</p>
                             <VerificationForm
                                 onSubmit={this.handleSubmitVerificationForm}
                                 timer={this.props.timer}
@@ -174,7 +178,7 @@ class RegistrationPage extends PureComponent {
                 {
                     showMoreInfoModal && (
                         <Modal>
-                            <div>
+                            <div className={styles.modalWrapper}>
                                 <div className={styles.closeWrapper} onClick={this.handleCloseModal}>
                                     <img className={styles.logo} src='/img/close.svg' />
                                 </div>

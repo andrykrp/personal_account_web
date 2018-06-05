@@ -6,3 +6,11 @@ export function formatWalletNumber(value) {
 
     return partOne + '-' + partTwo + '-' + partThree;
 }
+
+export function formatPhone(value) {
+    const
+        partOne = String(value).substring(0, 1),
+        partTwo = String(value).substring(1);
+
+    return '(+' + partOne + ')' + partTwo;
+}

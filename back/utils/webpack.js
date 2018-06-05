@@ -1,5 +1,5 @@
 const
-    webpack = require('back/utils/webpack'),
+    webpack = require('webpack'),
     webpackConfig = require('../webpack/common.config.js'),
     compiler = webpack(webpackConfig);
 

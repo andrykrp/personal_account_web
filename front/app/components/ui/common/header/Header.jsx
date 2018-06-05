@@ -14,7 +14,7 @@ export default class Header extends PureComponent {
     };
 
     static defaultProps = {
-        typeButton: 'back'
+        typeButton: 'menu'
     };
 
     render() {
@@ -23,8 +23,8 @@ export default class Header extends PureComponent {
         const buttonClasses = styleContext({
             button: true,
             buttonBack: typeButton === 'back',
-            buttonLogin: typeButton === 'login',
-            buttonLogout: typeButton === 'logout'
+            buttonMenu: typeButton === 'menu'
+
         });
 
         return (

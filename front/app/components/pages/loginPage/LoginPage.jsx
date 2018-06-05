@@ -47,6 +47,9 @@ class LoginPage extends PureComponent {
     };
 
     handleSignIn = (login, password) => {
+        const
+            { translate: t } = this.props;
+
         this.setState({
             login: login
         });
@@ -68,6 +71,15 @@ class LoginPage extends PureComponent {
                 this.setState({
                     stage: 2
                 });
+            } else {
+                this.notification.addNotification({
+                    title: t('notification.errorSignIn.title'),
+                    message: t('notification.errorSignIn.message'),
+                    autoDismiss: 3,
+                    level: 'error',
+                    position: 'tr',
+                    uid: 'errorLogin'
+                });
             }
         });
     };
@@ -76,12 +88,14 @@ class LoginPage extends PureComponent {
         this.setState({
             showForgotPasswordModal: true
         });
+        document.body.style.overflowY = 'hidden';
     };
 
     handleCloseModal = () => {
         this.setState({
             showForgotPasswordModal: false
         });
+        document.body.style.overflowY = 'auto';
     };
 
     handleSendRetry = () => {

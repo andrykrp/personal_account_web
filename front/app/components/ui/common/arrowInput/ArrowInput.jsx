@@ -20,7 +20,7 @@ export default class ArrowInput extends PureComponent {
         return (
             <div className={styles.wrapper} onClick={onClick}>
                 <span className={grey ? styles.greyLabel : styles.label}>{label}</span>
-                <img src='/img/arrow_black.svg' className={styles.iconArrow} />
+                <img src='/img/arrow_gray.svg' className={styles.iconArrow} />
             </div>
         );
     }

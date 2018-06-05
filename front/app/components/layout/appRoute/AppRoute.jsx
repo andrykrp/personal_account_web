@@ -11,7 +11,9 @@ class AppRoute extends PureComponent {
         path: PropTypes.string,
         component: PropTypes.func,
         permissions: PropTypes.array,
-        exact: PropTypes.bool
+        exact: PropTypes.bool,
+        showHeader: PropTypes.bool,
+        menuAvailable: PropTypes.bool
     };
 
     static defaultProps = {
@@ -22,7 +24,7 @@ class AppRoute extends PureComponent {
 
     render() {
         const
-            { title, path, exact, component } = this.props,
+            { title, path, exact, component, showHeader, menuAvailable } = this.props,
             Component = component;
 
         return (
@@ -36,6 +38,8 @@ class AppRoute extends PureComponent {
                                 <CommonLayout
                                     {...props}
                                     title={title}
+                                    showHeader={showHeader}
+                                    menuAvailable={menuAvailable}
                                 >
                                     {/*<div>
                                 <h2>{t('title')}</h2>

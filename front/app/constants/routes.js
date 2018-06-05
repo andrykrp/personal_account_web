@@ -8,34 +8,50 @@ export default [
     {
         path: '/',
         component: HomePage,
-        title: 'HomePage'
+        title: 'titlePage.homePage',
+        showHeader: true,
+        menuAvailable: true
     },
     {
         path: '/login',
         component: LoginPage,
-        title: 'Login'
+        title: 'titlePage.loginPage',
+        showHeader: false,
+        menuAvailable: false
     },
     {
         path: '/register',
         component: RegistrationPage,
-        title: 'RegistrationPage'
+        title: 'titlePage.registrationPage',
+        showHeader: false,
+        menuAvailable: false
     },
     {
         path: '/register/success',
         component: SuccessRegisterPage,
-        title: 'SuccessRegisterPage'
-    },{
+        title: 'titlePage.registrationPage',
+        showHeader: false,
+        menuAvailable: false
+    },
+    {
         path: '/register/:step',
         component: RegistrationPage,
-        title: 'RegistrationPage'
-    },{
+        title: 'titlePage.registrationPage',
+        showHeader: false,
+        menuAvailable: false
+    },
+    {
         path: '/start-settings',
         component: StartSettingsPage,
-        title: 'StartSettingsPage'
+        title: 'titlePage.startSettingsPage',
+        showHeader: false,
+        menuAvailable: false
     },
     {
         path: '/demo',
         component: HomePage,
-        title: 'HomePage'
+        title: 'titlePage.homePage',
+        showHeader: true,
+        menuAvailable: true
     }
 ];

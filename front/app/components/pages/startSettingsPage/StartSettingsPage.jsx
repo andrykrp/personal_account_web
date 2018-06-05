@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { I18n } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { contains, append, without, pipe, filter, map, join, isEmpty, equals } from 'ramda';
@@ -30,10 +29,12 @@ class StartSettingsPage extends PureComponent {
         showModalCurrency: false,
         selectCurrencies: [],
         checkSms: false,
-        showModalGeoLocation: true,
+        showModalGeoLocation: false,
         searchString: '',
+        searchStringCurrencies: '',
         searchResultGeoLocation: [],
-        selectGeoLocation: {}
+        selectGeoLocation: {},
+        searchResultCurrencies: this.props.listCurrencies
     };
 
     static defaultProps = {
@@ -44,7 +45,11 @@ class StartSettingsPage extends PureComponent {
         const { listCurrencies, actions } = this.props;
 
         if (isEmpty(listCurrencies)) {
-            actions.getListCurrencies();
+            actions.getListCurrencies().then(() => {
+                this.setState({
+                    searchResultCurrencies: this.props.listCurrencies
+                });
+            });
         }
     };
 
@@ -133,10 +138,32 @@ class StartSettingsPage extends PureComponent {
         });
     };
 
+    handleSearchTextChange = value => {
+        const
+            { searchStringCurrencies } = this.state,
+            {listCurrencies} = this.props;
+
+        let prevLength = searchStringCurrencies.length;
+
+        this.setState({
+            searchStringCurrencies: value
+        }, () => {
+            if (this.state.searchStringCurrencies.length >= 3 ) {
+                this.setState({
+                    searchResultCurrencies: filter((item) => item.description.toString().indexOf(this.state.searchStringCurrencies) !== -1, listCurrencies)
+                });
+            } else if (this.state.searchStringCurrencies.length < 3 && prevLength >= 3){
+                this.setState({
+                    searchResultCurrencies: listCurrencies
+                });
+            }
+        });
+    };
+
     render() {
         const
             { listCurrencies, translate: t } = this.props,
-            { geoLocationOn, twoFactorAuth, showModalCurrency, selectCurrencies, checkSms, showModalGeoLocation, searchString, searchResultGeoLocation, selectGeoLocation } = this.state;
+            { geoLocationOn, twoFactorAuth, showModalCurrency, selectCurrencies, checkSms, showModalGeoLocation, searchString, searchResultGeoLocation, selectGeoLocation, searchStringCurrencies, searchResultCurrencies } = this.state;
 
         let stringCurrencies = pipe(
             filter(({ id }) => contains(id, selectCurrencies)),
@@ -147,7 +174,8 @@ class StartSettingsPage extends PureComponent {
         return (
 
             <div className={styles.wrapper}>
-                <Header buttonClick={this.handleRedirectToBack} title={t('startSettingsPage.title')} />
+                <Header buttonClick={this.handleRedirectToBack} title={t('startSettingsPage.title')}
+                        typeButton='back' />
 
                 <div className={styles.content}>
 
@@ -163,11 +191,11 @@ class StartSettingsPage extends PureComponent {
                             label={selectCurrencies.length > 0 ? stringCurrencies : t('startSettingsPage.settingThree.title')}
                             onClick={this.handleOpenModalCurrency} />
                         <div className={styles.settingDesc}>{t('startSettingsPage.settingThree.desc')}</div>
-                        <div className={styles.wrapperCurrency}>
+                       {/* <div className={styles.wrapperCurrency}>
                             <div className={styles.currency}>UBC</div>
                             <div className={styles.currency}>ETH</div>
                             <div className={styles.currency}>$</div>
-                        </div>
+                        </div>*/}
                     </div>
                     <div className={styles.settingColumn}>
                         <div className={styles.settingRow}>
@@ -206,10 +234,15 @@ class StartSettingsPage extends PureComponent {
                 {
                     showModalCurrency && (
                         <Modal>
-                            <Header title='Выберите валюты' buttonClick={this.handleCloseModalCurrency} />
+                            <HeaderWithSearch searchValue={searchStringCurrencies}
+                                              onChangeSearchValue={this.handleSearchTextChange}
+                                              buttonClick={this.handleCloseModalCurrency}
+                                              typeButton='back'
+                            />
+                            {/*<Header title='Выберите валюты' buttonClick={this.handleCloseModalCurrency} typeButton='back'/>*/}
                             <ListWithCheckbox
                                 title='Список валют'
-                                list={listCurrencies}
+                                list={searchResultCurrencies}
                                 maxSelect={3}
                                 selectArray={selectCurrencies}
                                 onClickRow={this.handleClickRowCurrency}
@@ -222,7 +255,9 @@ class StartSettingsPage extends PureComponent {
                         <Modal>
                             <HeaderWithSearch searchValue={searchString}
                                               onChangeSearchValue={this.handleChangeSearch}
-                                              buttonClick={this.handleCloseGeoLocationModal} />
+                                              buttonClick={this.handleCloseGeoLocationModal}
+                                              typeButton='back'
+                            />
                             <div className={styles.wrapperModal}>
                                 {
                                     searchResultGeoLocation.length > 0 && mapIndex((item, index) => {
@@ -239,6 +274,13 @@ class StartSettingsPage extends PureComponent {
                                     searchResultGeoLocation.length === 0 && searchString.length === 0 && (
                                         <div className={styles.wrapperSearchContentEmpty}>
                                             {t('settings.descriptionSearchLocation')}
+                                        </div>
+                                    )
+                                }
+                                {
+                                    searchResultGeoLocation.length === 0 && searchString.length !== 0 && (
+                                        <div className={styles.wrapperSearchContentEmpty}>
+                                            {t('settings.notFound')}
                                         </div>
                                     )
                                 }

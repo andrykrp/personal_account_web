@@ -13,24 +13,53 @@ export default class HeaderWithSearch extends PureComponent {
     static propTypes = {
         buttonClick: PropTypes.func,
         searchValue: PropTypes.string,
-        onChangeSearchValue: PropTypes.func
+        onChangeSearchValue: PropTypes.func,
+        typeButton: PropTypes.string
+    };
+
+    static defaultProps = {
+        typeButton: 'back'
+    };
+
+    state = {
+        hideLogo: false
     };
 
     handleChangeInput = (event) => {
         this.props.onChangeSearchValue(event.target.value);
     };
 
+    setFocusInput = () => {
+        this.setState({
+            hideLogo: true
+        });
+    };
+
+    setBlurInput = () => {
+        if (this.props.searchValue.length === 0) {
+            this.setState({
+                hideLogo: false
+            });
+        }
+    };
+
     render() {
-        const { buttonClick, searchValue, translate: t } = this.props;
+        const { buttonClick, searchValue, translate: t, typeButton } = this.props;
 
         const buttonClasses = styleContext({
             button: true,
-            buttonBack: true
+            buttonBack: typeButton === 'back',
+            buttonMenu: typeButton === 'menu'
         });
 
         const logoClasses = styleContext({
             logo: true,
-            logoHidden: searchValue !== ''
+            logoHidden: searchValue !== '' || this.state.hideLogo
+        });
+
+        const inputClasses = styleContext({
+            searchInput: true,
+            searchInputWide: searchValue !== '' || this.state.hideLogo
         });
 
         return (
@@ -40,10 +69,12 @@ export default class HeaderWithSearch extends PureComponent {
                     onClick={buttonClick}
                     className={buttonClasses}
                 />
-                <input className={styles.searchInput} type='text' value={searchValue}
-                       onChange={this.handleChangeInput}
-                       placeholder={t('headerWithSearch.placeholder')}
-                />
+                    <input className={inputClasses} type='text' value={searchValue}
+                           onChange={this.handleChangeInput}
+                           onFocus={this.setFocusInput}
+                           onBlur={this.setBlurInput}
+                           placeholder={t('headerWithSearch.placeholder')}
+                    />
                 <div className={logoClasses} />
             </div>
         );

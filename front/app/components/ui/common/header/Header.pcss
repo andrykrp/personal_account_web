@@ -1,17 +1,23 @@
 .wrapper {
   background-color: #1a1a1d;
-  min-height: 10px;
+  height: 60px;
+  box-sizing: border-box;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 10px 10px 15px;
   align-items: center;
+  font-family: 'Roboto Condensed', sans-serif;
+  position: fixed;
+  top: 0;
+  z-index: 4;
 }
 
 .title {
   color: white;
   font-size: 20px;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 .logo {
@@ -26,9 +32,9 @@
   border: none;
   background-color: transparent;
   outline: none;
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
+  width: 25px;
+  height: 25px;
+  background-size: 25px 25px;
   background-position: center;
   transform: rotate(180deg);
   cursor: pointer;
@@ -44,4 +50,8 @@
 
 .buttonLogout {
   background-image: url('/img/logout.svg');
+}
+
+.buttonMenu {
+  background-image: url('/img/menu.svg');
 }

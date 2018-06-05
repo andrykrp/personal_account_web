@@ -7,7 +7,7 @@ export default function registration(phone, code, password) {
         dispatch({type: SHOW_LOADER, id: VERIFICATION});
 
         return request({
-            url: '/api/user/registration',
+            url: '/api/users/registration',
             method: 'POST',
             data: {
                 phone,
