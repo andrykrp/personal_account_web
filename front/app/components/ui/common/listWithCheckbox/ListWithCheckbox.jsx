@@ -61,6 +61,13 @@ export default class ListWithCheckbox extends PureComponent {
                         }, list)
                     }
                 </div>
+                {
+                    list.length === 0 && (
+                        <div className={styles.wrapperSearchContentEmpty}>
+                            {t('settings.notFound')}
+                        </div>
+                    )
+                }
             </div>
         );
     }

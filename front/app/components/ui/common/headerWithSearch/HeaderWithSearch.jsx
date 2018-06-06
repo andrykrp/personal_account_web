@@ -29,6 +29,13 @@ export default class HeaderWithSearch extends PureComponent {
         this.props.onChangeSearchValue(event.target.value);
     };
 
+    handleResetSearchValue = () => {
+        this.props.onChangeSearchValue('');
+        this.setState({
+            hideLogo: false
+        });
+    };
+
     setFocusInput = () => {
         this.setState({
             hideLogo: true
@@ -62,6 +69,11 @@ export default class HeaderWithSearch extends PureComponent {
             searchInputWide: searchValue !== '' || this.state.hideLogo
         });
 
+        const resetButtonClasses = styleContext({
+            resetButton: true,
+            resetButtonHidden: searchValue === ''
+        });
+
         return (
 
             <div className={styles.wrapper}>
@@ -69,12 +81,15 @@ export default class HeaderWithSearch extends PureComponent {
                     onClick={buttonClick}
                     className={buttonClasses}
                 />
+                <div className={styles.wrapperInput}>
                     <input className={inputClasses} type='text' value={searchValue}
                            onChange={this.handleChangeInput}
                            onFocus={this.setFocusInput}
                            onBlur={this.setBlurInput}
                            placeholder={t('headerWithSearch.placeholder')}
                     />
+                    <div className={resetButtonClasses} onClick={this.handleResetSearchValue}/>
+                </div>
                 <div className={logoClasses} />
             </div>
         );
