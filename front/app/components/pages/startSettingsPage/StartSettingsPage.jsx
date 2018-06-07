@@ -150,7 +150,7 @@ class StartSettingsPage extends PureComponent {
         }, () => {
             if (this.state.searchStringCurrencies.length >= 3 ) {
                 this.setState({
-                    searchResultCurrencies: filter((item) => item.description.toString().indexOf(this.state.searchStringCurrencies) !== -1, listCurrencies)
+                    searchResultCurrencies: filter((item) => item.name.toString().indexOf(this.state.searchStringCurrencies) !== -1, listCurrencies)
                 });
             } else if (this.state.searchStringCurrencies.length < 3 && prevLength >= 3){
                 this.setState({
@@ -167,7 +167,7 @@ class StartSettingsPage extends PureComponent {
 
         let stringCurrencies = pipe(
             filter(({ id }) => contains(id, selectCurrencies)),
-            map(({ description, character }) => `${description} (${character})`),
+            map(({ name, character }) => `${name} (${character})`),
             join(', ')
         )(listCurrencies);
 

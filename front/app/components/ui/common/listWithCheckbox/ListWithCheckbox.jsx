@@ -30,7 +30,7 @@ export default class ListWithCheckbox extends PureComponent {
     renderRowList = (item) => (
         <div key={item.id} className={styles.row} onClick={() => this.handleClickRow(item.id)}>
             <div className={styles.rowName}>
-                <span>{item.description}</span>
+                <span>{item.name}</span>
                 <span>{item.character}</span>
             </div>
             <Switch
