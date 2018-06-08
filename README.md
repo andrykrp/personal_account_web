@@ -1,1 +1,1 @@
-# ubcoin
+# ubcoin - web
